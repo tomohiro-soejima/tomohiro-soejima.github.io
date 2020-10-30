@@ -1,7 +1,7 @@
-@def title = "Franklin Example"
+@def title = "Home"
 @def tags = ["syntax", "code"]
 
-# 
+# Welcome!
 
 Tomohiro Soejima (副島　智大)
 
