@@ -416,3 +416,17 @@ div#footer-text {
 table {
   margin-bottom: 1em;
 }
+
+
+/* custom content */
+
+.pubs {
+  padding: 3px 0px 3px 10px;
+}
+
+
+.pubs:nth-child(even) {
+  background-color: #dcdcdc;
+  /*background-color: #ddd;*/
+  border-radius: 5px;
+}
