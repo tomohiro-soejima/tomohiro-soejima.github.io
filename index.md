@@ -35,7 +35,7 @@ My main area of research is condensed matter physics, and specifically tensor ne
 
 ## Publications
 
-Full publication list (since graduate school) can be found on [my arXiv author profile](). Here is a partial list of publications.
+Full publication list (since graduate school) can be found on [my arXiv author profile](https://arxiv.org/a/soejima_t_1.html). Here is a partial list of publications.
 
 @@pubs **Efficient simulation of moiré materials using the density matrix renormalization group**
 
@@ -55,10 +55,10 @@ Masahiko G. Yamada, **_Tomohiro Soejima_**, Naoto Tsuji, Daisuke Hirai, Mircea D
 
 ## Outreach and Service
 
-I was a member and co-President of MIT Clubchem during my undergraduate years and performed "Chemistry magic shows" to local primary school students on a regular basis.
+I was a member and co-President of [MIT Clubchem](https://www.youtube.com/watch?v=tCmNu9vNcyI&feature=youtu.be) during my undergraduate years and performed "Chemistry magic shows" to local primary school students on a regular basis.
 
-At Berkeley, I am part of [BASIS](). We go to local primary schools to hold one-hour hands-on classes on some scientific concept.
+At Berkeley, I am part of [BASIS](https://www.crscience.org/outreach/basis/). We go to local primary schools to hold one-hour hands-on classes on some scientific concept.
 
-Inside Berkeley, I have mentored three undergraduate students via math and physics directed reading programs (DRP), as well as mentoring undergradute research project at the Zaletel group.
+Inside Berkeley, I have mentored three undergraduate students via math and physics directed reading programs ([DRP](https://berkeleyphysicsdrp.wixsite.com/physicsberkeleydrp#:~:text=The%20Berkeley%20Physics%20Directed%20Reading,graduate%20student%20in%20the%20department.)), as well as mentoring undergradute research project at the Zaletel group.
 
 I am also serving on the soft condensed matter faculty search committee (Fall 2020) as a student liason.
