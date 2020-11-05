@@ -18,7 +18,7 @@
 	{{isdef title}}<h1>{{fill title}}</h1>{{end}}
   <h3>
   {{isdef published}} <span style="font-weight: lighter;"> posted: {{fill published}}
-  {{if modified}}| last modified:  {{fill fd_mtime_raw}}{{end}}
+  {{showmodified}}
   </span>
 	|
 	{{end}}

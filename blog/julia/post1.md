@@ -4,10 +4,6 @@
 @def rss = "Function-like objects in Julia"
 @def author="Tomohiro Soejima"
 
-@def modified = false <!-- locvar(:fd_mtime_raw)!=locvar(:published) -->
-@def modified_date = locvar(:fd_mtime_raw)
-
-
 @def tags = ["syntax", "code"]
 
 

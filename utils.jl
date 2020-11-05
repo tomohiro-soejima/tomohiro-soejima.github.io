@@ -14,3 +14,12 @@ function lx_baz(com, _)
   # do whatever you want here
   return uppercase(brace_content)
 end
+
+
+### custom functions ###
+
+function hfun_showmodified()
+  modified = locvar(:fd_mtime_raw) != locvar(:published)
+  modified && return "| last modified:  $(locvar(:fd_mtime_raw))"
+  return ""
+end
