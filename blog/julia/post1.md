@@ -1,11 +1,15 @@
 @def title = "Function like objects and closures"
 @def hascode = true
-@def date = Date(2020, 10, 31)
+@def published = Date(2020, 11, 5)
 @def rss = "Function-like objects in Julia"
+@def author="Tomohiro Soejima"
+
+@def modified = false <!-- locvar(:fd_mtime_raw)!=locvar(:published) -->
+@def modified_date = locvar(:fd_mtime_raw)
+
 
 @def tags = ["syntax", "code"]
 
-# Function-like objects and closures
 
 Functions are "first-class citizens" in julia. Accordingly, there are a lot of neat tricks you can play with functions such as function closures. On the other hand, there are some pitfalls when using functions that were not obvious to me at first sight. This post is an attempt to document and clarify how functions behave.
 
@@ -437,7 +441,7 @@ mygen2 = mygenmul2(-2)
 
 The second function is markedely faster than the first one, precisely because of the issue with captured variables.
 
-## Summary
+## Summary and performance tips
 
 There are many different ways of defining function-like objects in julia, which lets the function carry some external data. When used correctly, these objects help us write powerful and performant Julia code. On the other hand, there are somewhat subtle performance pitfalls that one needs to be aware of. Here is a short summary of what to do in different scenarios.
 
