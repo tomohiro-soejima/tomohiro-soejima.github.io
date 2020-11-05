@@ -1,0 +1,350 @@
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/jemdoc.css"> <link rel=icon  href="/assets/favicon.png"> <title>Function like objects and closures</title> <table id=tlayout > <tr valign=top > <td id=layout-menu > <div class="menu-item "><a href="/">home</a></div> <div class=menu-category >julia</div> <div class="menu-item "><a href="/post1/">Closure</a></div> <td id=layout-content > <div class=franklin-content ><h1 id=function-like_objects_and_closures ><a href="#function-like_objects_and_closures">Function-like objects and closures</a></h1> <p>Functions are &quot;first-class citizens&quot; in julia. Accordingly, there are a lot of neat tricks you can play with functions such as function closures. On the other hand, there are some pitfalls when using functions that were not obvious to me at first sight. This post is an attempt to document and clarify how functions behave.</p> <div class=franklin-toc ><ol><li><a href="#julia_functions">Julia functions</a><ol><li><a href="#julia_functions_are_first-class_citizens">Julia functions are first-class citizens</a><li><a href="#julia_functions_are_their_own_types">Julia functions are their own types</a></ol><li><a href="#function-like_objects">Function-like objects</a><ol><li><a href="#defining_callable_type">Defining callable type</a><li><a href="#closures">Closures</a><li><a href="#not_all_closures_are_created_equal">Not all closures are created equal</a><li><a href="#closure_and_let_blocks">Closure and let blocks</a><li><a href="#miscallaneous_anonymous_function_appearances">Miscallaneous anonymous function appearances</a></ol><li><a href="#summary">Summary</a></ol></div> <h2 id=julia_functions ><a href="#julia_functions">Julia functions</a></h2> <h3 id=julia_functions_are_first-class_citizens ><a href="#julia_functions_are_first-class_citizens">Julia functions are first-class citizens</a></h3> <p>You can define a <strong>named</strong> function and assign that to a variable.</p> <pre><code class="julia hljs">f(x) = <span class=hljs-number >2</span>x
+g = f
+
+g <span class=hljs-comment ># show this</span></code></pre> <pre><code class="plaintext hljs">f (generic function with 1 method)</code></pre>
+<p>We can also define <strong>anonymous</strong> functions via <code>x-&gt;f&#40;x&#41;</code> syntax:</p>
+<pre><code class="julia hljs">f2 = x-&gt;<span class=hljs-number >2</span>x
+g2 = f2
+g2 <span class=hljs-comment ># show this</span></code></pre>
+<p>Output: <pre><code class="plaintext hljs">#1 (generic function with 1 method)</code></pre></p>
+<p>Note that anonymous functions are labeled by some number &#40;e.g. #1&#41; instead of its name.</p>
+<p>Named functions behave kind of like constants, in the sense it cannot be reassigned.</p>
+<pre><code class="julia hljs">f(x) = <span class=hljs-number >2</span>x
+f = x-&gt;<span class=hljs-number >3</span>x <span class=hljs-comment ># invalid redefinition of constant f</span></code></pre>
+<p>Output: <pre><code class="plaintext hljs">invalid redefinition of constant f
+</code></pre></p>
+<p>Meanwhile, variables that were assigned anonymous functions can be reassigned with no problem</p>
+<pre><code class="julia hljs">f2 = x-&gt;<span class=hljs-number >2</span>x
+f2 = x-&gt;<span class=hljs-number >3</span>x <span class=hljs-comment ># this redefinition happens without any problem</span>
+<span class=hljs-meta >@show</span> f2(<span class=hljs-number >2</span>)</code></pre>
+<p>Output: <pre><code class="plaintext hljs">f2(2) = 6
+</code></pre></p>
+<h4 id=function_definition_inside_if-else_block ><a href="#function_definition_inside_if-else_block">Function definition inside if-else block</a></h4>
+<p>Because of this <code>const</code>-like nature of functions, there are some pitfalls you might encounter. Consider the following example:</p>
+<pre><code class="julia hljs"><span class=hljs-keyword >function</span> get_q(condition)
+    <span class=hljs-keyword >if</span> condition
+        q(::<span class=hljs-built_in >Int</span>) = println(<span class=hljs-string >&quot;Cond was true&quot;</span>)
+        q(::<span class=hljs-built_in >Float64</span>) = println(<span class=hljs-string >&quot;I don&#x27;t like Float&quot;</span>)
+    <span class=hljs-keyword >else</span>
+        q(::<span class=hljs-built_in >Int</span>) = println(<span class=hljs-string >&quot;I don&#x27;t like Int&quot;</span>)
+        q(::<span class=hljs-built_in >Float64</span>) = println(<span class=hljs-string >&quot;Cond was false&quot;</span>)
+    <span class=hljs-keyword >end</span>
+    <span class=hljs-keyword >return</span> q
+<span class=hljs-keyword >end</span>
+
+q = get_q(<span class=hljs-literal >true</span>)
+q(<span class=hljs-number >1</span>)
+q(<span class=hljs-number >1.0</span>)
+q = get_q(<span class=hljs-literal >false</span>)</code></pre>
+<pre><code class="plaintext hljs">I don&#x27;t like Int
+Cond was false
+UndefVarError: q not defined
+</code></pre>
+<p>We immediately see two issues. 1. <code>q</code> returns the results for <code>condition &#61;&#61; false</code>, even though we passed <code>condition &#61;&#61; true</code>. 2. When we pass <code>condition&#61;&#61;false</code>, the code faces and <code>UndefVarError</code>. This seems to come from how Julia parser works: The parser parses function definitions in a given local scope without regarding the control flow, so it makes the later appearance the definition of <code>q</code>.</p>
+<p>A clean way to get around this problem is to use let blocks to introduce new local scopes:</p>
+<pre><code class="julia hljs"><span class=hljs-keyword >function</span> get_q(condition)
+    fun = <span class=hljs-keyword >if</span> condition
+        <span class=hljs-keyword >let</span>
+            q(::<span class=hljs-built_in >Int</span>) = println(<span class=hljs-string >&quot;Cond was true&quot;</span>)
+            q(::<span class=hljs-built_in >Float64</span>) = println(<span class=hljs-string >&quot;I don&#x27;t like Float&quot;</span>)
+        <span class=hljs-keyword >end</span>
+    <span class=hljs-keyword >else</span>
+        <span class=hljs-keyword >let</span>
+            q(::<span class=hljs-built_in >Int</span>) = println(<span class=hljs-string >&quot;I don&#x27;t like Int&quot;</span>)
+            q(::<span class=hljs-built_in >Float64</span>) = println(<span class=hljs-string >&quot;Cond was false&quot;</span>)
+        <span class=hljs-keyword >end</span>
+    <span class=hljs-keyword >end</span>
+    <span class=hljs-keyword >return</span> fun
+<span class=hljs-keyword >end</span>
+
+q = get_q(<span class=hljs-literal >true</span>)
+q(<span class=hljs-number >1</span>)
+q(<span class=hljs-number >1.0</span>)
+q2 = get_q(<span class=hljs-literal >false</span>)
+q2(<span class=hljs-number >1</span>)
+q2(<span class=hljs-number >1.0</span>)</code></pre>
+<pre><code class="plaintext hljs">Cond was true
+I don&#x27;t like Float
+I don&#x27;t like Int
+Cond was false
+</code></pre>
+<h3 id=julia_functions_are_their_own_types ><a href="#julia_functions_are_their_own_types">Julia functions are their own types</a></h3>
+<p>There are functions that take other functions as argument. These so-called <strong>higher-order functions</strong> are very useful in Julia. A simple example is a <code>sum</code> function:</p>
+<pre><code class="julia hljs">f(x) = <span class=hljs-number >2</span>x
+<span class=hljs-meta >@show</span> sum(f, <span class=hljs-number >1</span>:<span class=hljs-number >10</span>)</code></pre>
+<p>Output: <pre><code class="plaintext hljs">sum(f, 1:10) = 110
+</code></pre></p>
+<p>In order for this <code>sum</code> to be fast, you want it to specialize to the particular function <code>f</code> you passed. In order to allow this, every function is its own type such that Julia&#39;s type system can take care of code specialization &#40;where is this in the documentation?&#41;. In particular, this means two functions with the same definition have different types, and are thus different objects.</p>
+<pre><code class="julia hljs">f(x) = <span class=hljs-number >2</span>x
+g(x) = <span class=hljs-number >2</span>x
+<span class=hljs-meta >@show</span> (typeof(f) == typeof(g))
+<span class=hljs-meta >@show</span> f == g
+
+f2 = x-&gt;<span class=hljs-number >2</span>x
+g2 = x-&gt;<span class=hljs-number >2</span>x
+
+<span class=hljs-meta >@show</span>(typeof(f2) == typeof(g2))
+<span class=hljs-meta >@show</span> f2 == g2</code></pre>
+<p>Output: <pre><code class="plaintext hljs">cannot define function g; it already has a value
+</code></pre></p>
+<p>A straightforward consequence of this is that compiling a function with <code>f</code> does not compile it for <code>g</code>.</p>
+<pre><code class="julia hljs">f(x) = <span class=hljs-number >2</span>x
+g(x) = <span class=hljs-number >2</span>x
+
+<span class=hljs-keyword >function</span> mysum(f, data)
+    sum = zero(eltype(data))
+    <span class=hljs-keyword >for</span> a <span class=hljs-keyword >in</span> data
+        sum += f(a)
+    <span class=hljs-keyword >end</span>
+<span class=hljs-keyword >end</span>
+
+data = rand(<span class=hljs-number >1000</span>)
+<span class=hljs-meta >@time</span> mysum(f, data) <span class=hljs-comment ># includes compilation time</span>
+<span class=hljs-meta >@time</span> mysum(f, data) <span class=hljs-comment ># after compilation</span>
+<span class=hljs-meta >@time</span> mysum(g, data) <span class=hljs-comment ># compilation again</span></code></pre>
+<p>Output: <pre><code class="plaintext hljs">cannot define function g; it already has a value
+</code></pre></p>
+<h2 id=function-like_objects ><a href="#function-like_objects">Function-like objects</a></h2>
+<h3 id=defining_callable_type ><a href="#defining_callable_type">Defining callable type</a></h3>
+<p>Julia has objects other than functions that behave like one. These are called <strong>function-like objects</strong>. Here is an example straight out of the julia <a href="https://docs.julialang.org/en/v1/manual/methods/#Function-like-objects">manual</a>.</p>
+<pre><code class="julia hljs"><span class=hljs-keyword >struct</span> Polynomial{R}
+    coeffs::<span class=hljs-built_in >Vector</span>{R}
+<span class=hljs-keyword >end</span>
+
+<span class=hljs-keyword >function</span> (p::Polynomial)(x)
+    v = p.coeffs[<span class=hljs-keyword >end</span>]
+    <span class=hljs-keyword >for</span> i = (length(p.coeffs)-<span class=hljs-number >1</span>):-<span class=hljs-number >1</span>:<span class=hljs-number >1</span>
+        v = v*x + p.coeffs[i]
+    <span class=hljs-keyword >end</span>
+    <span class=hljs-keyword >return</span> v
+<span class=hljs-keyword >end</span>
+
+p = Polynomial([<span class=hljs-number >1</span>, <span class=hljs-number >10</span>, <span class=hljs-number >100</span>])
+<span class=hljs-meta >@show</span> p(<span class=hljs-number >5</span>)</code></pre>
+<p>Output: <pre><code class="plaintext hljs">p(5) = 2551
+</code></pre></p>
+<p>In other words, function-like objects can be thought of as functions that carry extra data. This gives us access to closures.</p>
+<h3 id=closures ><a href="#closures">Closures</a></h3>
+<p>Closures are functions that can reference its own environment. It is usually defined inside another function. Here is a simple example.</p>
+<pre><code class="julia hljs"><span class=hljs-keyword >function</span> getfunc()
+    count = <span class=hljs-number >0</span>
+    <span class=hljs-keyword >function</span> g()
+        count += <span class=hljs-number >1</span>
+        <span class=hljs-keyword >return</span> count
+    <span class=hljs-keyword >end</span>
+<span class=hljs-keyword >end</span>
+
+func = getfunc()
+<span class=hljs-meta >@show</span> func()
+<span class=hljs-meta >@show</span> func()
+<span class=hljs-meta >@show</span> func()</code></pre>
+<p>Output: <pre><code class="plaintext hljs">func() = 1
+func() = 2
+func() = 3
+</code></pre></p>
+<p>Here, the function <code>func</code> carries around the variable <code>const</code>, and it increments it every time the function is called. The closure behaves very similarly to the following function-like object:</p>
+<pre><code class="julia hljs"><span class=hljs-keyword >mutable struct</span> Closure
+    counter :: <span class=hljs-built_in >Int</span>
+<span class=hljs-keyword >end</span>
+
+<span class=hljs-keyword >function</span> (c::Closure)()
+    c.counter += <span class=hljs-number >1</span>
+    <span class=hljs-keyword >return</span> c.counter
+<span class=hljs-keyword >end</span>
+
+c = Closure(<span class=hljs-number >0</span>)
+<span class=hljs-meta >@show</span> c()
+<span class=hljs-meta >@show</span> c()
+<span class=hljs-meta >@show</span> c()</code></pre>
+<p>Output: <pre><code class="plaintext hljs">c() = 1
+c() = 2
+c() = 3
+</code></pre></p>
+<p>In other words, a closure is a function with extra &#40;potentially mutable&#41; data.</p>
+<h3 id=not_all_closures_are_created_equal ><a href="#not_all_closures_are_created_equal">Not all closures are created equal</a></h3>
+<p>There&#39;s a performance caveat regarding the use of closures. We first test <code>@code_warntype</code> of <code>func&#40;&#41;</code>.</p>
+<pre><code class="julia hljs"><span class=hljs-meta >@code_warntype</span> func()</code></pre>
+<p>Output:</p>
+<pre><code class="julia hljs">Variables
+  <span class=hljs-comment >#self#::f.var&quot;#g#27&quot;</span>
+  count<span class=hljs-meta >@_2</span>::<span class=hljs-built_in >Union</span>{}
+  count<span class=hljs-meta >@_3</span>::<span class=hljs-built_in >Union</span>{}
+
+Body::<span class=hljs-built_in >ANY</span>
+<span class=hljs-number >1</span> ─ %<span class=hljs-number >1</span>  = Core.getfield(<span class=hljs-comment >#self#, :count)::CORE.BOX</span>
+│   %<span class=hljs-number >2</span>  = Core.isdefined(%<span class=hljs-number >1</span>, :contents)::<span class=hljs-built_in >Bool</span>
+└──       goto <span class=hljs-comment >#3 if not %2</span>
+<span class=hljs-number >2</span> ─       goto <span class=hljs-comment >#4</span>
+<span class=hljs-number >3</span> ─       Core.<span class=hljs-built_in >NewvarNode</span>(:(count<span class=hljs-meta >@_2</span>))
+└──       count<span class=hljs-meta >@_2</span>
+<span class=hljs-number >4</span> ┄ %<span class=hljs-number >7</span>  = Core.getfield(%<span class=hljs-number >1</span>, :contents)::<span class=hljs-built_in >ANY</span>
+│   %<span class=hljs-number >8</span>  = (%<span class=hljs-number >7</span> + <span class=hljs-number >1</span>)::<span class=hljs-built_in >ANY</span>
+│   %<span class=hljs-number >9</span>  = Core.getfield(<span class=hljs-comment >#self#, :count)::CORE.BOX</span>
+│         Core.setfield!(%<span class=hljs-number >9</span>, :contents, %<span class=hljs-number >8</span>)
+│   %<span class=hljs-number >11</span> = Core.getfield(<span class=hljs-comment >#self#, :count)::CORE.BOX</span>
+│   %<span class=hljs-number >12</span> = Core.isdefined(%<span class=hljs-number >11</span>, :contents)::<span class=hljs-built_in >Bool</span>
+└──       goto <span class=hljs-comment >#6 if not %12</span>
+<span class=hljs-number >5</span> ─       goto <span class=hljs-comment >#7</span>
+<span class=hljs-number >6</span> ─       Core.<span class=hljs-built_in >NewvarNode</span>(:(count<span class=hljs-meta >@_3</span>))
+└──       count<span class=hljs-meta >@_3</span>
+<span class=hljs-number >7</span> ┄ %<span class=hljs-number >17</span> = Core.getfield(%<span class=hljs-number >11</span>, :contents)::<span class=hljs-built_in >ANY</span>
+└──       <span class=hljs-keyword >return</span> %<span class=hljs-number >17</span></code></pre>
+<p>It is screaming type instability &#40;see <code>Body::Any</code>&#41; because the compiler cannot figure out <code>counter</code> only takes on integer values &#40;It is in fact put inside a <code>Core.Box</code>, a julia type for handling variables with unknown value&#41;. As a result, this particular closure is a lot slower than a similar looking function-like object. </p>
+<pre><code class="julia hljs">c = Closure(<span class=hljs-number >0</span>)
+func = getfunc()
+
+<span class=hljs-keyword >using</span> BenchmarkTools
+<span class=hljs-meta >@btime</span> $c()
+<span class=hljs-meta >@btime</span> $func()</code></pre>
+<pre><code class="plaintext hljs">ArgumentError: Package BenchmarkTools not found in current path:
+- Run `import Pkg; Pkg.add(&quot;BenchmarkTools&quot;)` to install the BenchmarkTools package.
+
+</code></pre>
+<p>Type annotation somewhat helps, but it is not enough to eliminate the performance gap.</p>
+<pre><code class="julia hljs"><span class=hljs-keyword >function</span> getfunc2()
+    counter::<span class=hljs-built_in >Int</span> = <span class=hljs-number >0</span>
+    <span class=hljs-keyword >function</span> f()
+        counter::<span class=hljs-built_in >Int</span> += <span class=hljs-number >1</span>
+        <span class=hljs-keyword >return</span> counter
+    <span class=hljs-keyword >end</span>
+<span class=hljs-keyword >end</span>
+
+func2 = getfunc2()
+
+<span class=hljs-meta >@btime</span> $c()
+<span class=hljs-meta >@btime</span> $func2()</code></pre>
+<pre><code class="plaintext hljs">LoadError: UndefVarError: @btime not defined
+in expression starting at none:2
+</code></pre>
+<h3 id=closure_and_let_blocks ><a href="#closure_and_let_blocks">Closure and let blocks</a></h3>
+<p>Part of the problem in the previous section was the appearance of <code>Core.box</code> in type inference. In some cases, we can eliminate such ambiguity via clever use of <code>let...end</code> blocks.</p>
+<p>Let&#39;s look at an <a href="https://docs.julialang.org/en/v1/manual/performance-tips/#man-performance-captured">example</a> from the Julia manual.</p>
+<pre><code class="julia hljs"><span class=hljs-keyword >function</span> abmult2(r0::<span class=hljs-built_in >Int</span>)
+    r::<span class=hljs-built_in >Int</span> = r0
+    <span class=hljs-keyword >if</span> r &lt; <span class=hljs-number >0</span>
+        r = -r
+    <span class=hljs-keyword >end</span>
+    f = x -&gt; x * r
+    <span class=hljs-keyword >return</span> f
+<span class=hljs-keyword >end</span>
+
+mul2 = abmult2(-<span class=hljs-number >2</span>)
+<span class=hljs-meta >@show</span> mul2(<span class=hljs-number >2</span>)
+<span class=hljs-meta >@code_warntype</span> mul2(<span class=hljs-number >2</span>)</code></pre>
+<pre><code class="plaintext hljs">mul2(2) = 4
+LoadError: UndefVarError: @code_warntype not defined
+in expression starting at none:1
+</code></pre>
+<p>We again see the dreaded <code>Core.box</code>. The reason is the value of <code>r</code> can, in theory, be changed, and Julia needs to keep track of that fact by putting <code>r</code> in a box. However, when we return something like this, we actually want to return a function with a fixed <code>r</code>. We can do that using a <code>let...end</code> block.</p>
+<pre><code class="julia hljs"><span class=hljs-keyword >function</span> abmult3(r0::<span class=hljs-built_in >Int</span>)
+    r::<span class=hljs-built_in >Int</span> = r0
+    <span class=hljs-keyword >if</span> r &lt; <span class=hljs-number >0</span>
+        r = -r
+    <span class=hljs-keyword >end</span>
+    f = <span class=hljs-keyword >let</span> r2 = r
+        x -&gt; x * r2
+        <span class=hljs-keyword >end</span>
+    <span class=hljs-keyword >return</span> f
+<span class=hljs-keyword >end</span>
+
+mul3 = abmult3(-<span class=hljs-number >2</span>)
+<span class=hljs-meta >@show</span> mul3(<span class=hljs-number >2</span>)
+<span class=hljs-meta >@code_warntype</span> mul3(<span class=hljs-number >2</span>)</code></pre>
+<pre><code class="plaintext hljs">mul3(2) = 4
+LoadError: UndefVarError: @code_warntype not defined
+in expression starting at none:1
+</code></pre>
+<p><code>let...end</code> introduces a new local scope. Inside the local scope, a new variable <code>r2</code> is bound to the value of <code>r</code> at the time of evaluation. Since <code>r2</code> goes out of scope, Julia compiler is able to remove <code>Core.box</code>.</p>
+<p>Removing <code>Core.box</code> comes with a great performance benefit. In fact, the resultin function <code>mul3</code> is almost as performant as a similar top level function.</p>
+<pre><code class="julia hljs">mul0 = x-&gt;<span class=hljs-number >2</span>x
+
+<span class=hljs-meta >@btime</span> $mul0(<span class=hljs-number >2</span>)
+<span class=hljs-meta >@btime</span> $mul2(<span class=hljs-number >2</span>)
+<span class=hljs-meta >@btime</span> $mul3(<span class=hljs-number >2</span>)</code></pre>
+<pre><code class="plaintext hljs">LoadError: UndefVarError: @btime not defined
+in expression starting at none:2
+</code></pre>
+<p>Note that such care is necessary even if the closure is only used inside the function itself.</p>
+<pre><code class="julia hljs"><span class=hljs-keyword >function</span> mulsum0(r0::<span class=hljs-built_in >Int</span>, data)
+    f = x-&gt;x * r0
+    <span class=hljs-keyword >return</span> sum(f, data)
+<span class=hljs-keyword >end</span>
+
+<span class=hljs-keyword >function</span> abmulsum1(r0::<span class=hljs-built_in >Int</span>, data)
+    <span class=hljs-keyword >if</span> r0 &lt; <span class=hljs-number >0</span>
+        r0 = -r0
+    <span class=hljs-keyword >end</span>
+    f = <span class=hljs-keyword >let</span> r0 = r0
+        x-&gt;x * r0
+        <span class=hljs-keyword >end</span>
+    <span class=hljs-keyword >return</span> sum(f, data)
+<span class=hljs-keyword >end</span>
+
+<span class=hljs-keyword >function</span> abmulsum2(r0::<span class=hljs-built_in >Int</span>, data)
+    <span class=hljs-keyword >if</span> r0 &lt; <span class=hljs-number >0</span>
+        r0 = -r0
+    <span class=hljs-keyword >end</span>
+    f = x-&gt;x * r0
+    <span class=hljs-keyword >return</span> sum(f, data)
+<span class=hljs-keyword >end</span>
+
+r0 = -<span class=hljs-number >2</span>
+data = rand(<span class=hljs-number >1000</span>)
+
+<span class=hljs-meta >@btime</span> mulsum0($r0, $data)
+<span class=hljs-meta >@btime</span> abmulsum1($r0, $data)
+<span class=hljs-meta >@btime</span> abmulsum2($r0, $data)</code></pre>
+<pre><code class="plaintext hljs">LoadError: UndefVarError: @btime not defined
+in expression starting at none:2
+</code></pre>
+<h3 id=miscallaneous_anonymous_function_appearances ><a href="#miscallaneous_anonymous_function_appearances">Miscallaneous anonymous function appearances</a></h3>
+<p>There are other places where anonymous functions are useful. One prominent example is generators.</p>
+<pre><code class="julia hljs">mygen = (<span class=hljs-number >2</span>x <span class=hljs-keyword >for</span> x <span class=hljs-keyword >in</span> <span class=hljs-number >1</span>:<span class=hljs-number >10</span>)</code></pre>
+<p>This <code>2x</code> here is really an anonymous function. To make it explicit, we can instead write</p>
+<pre><code class="julia hljs">mygen2 = Base.Generator(x-&gt;<span class=hljs-number >2</span>x, <span class=hljs-number >1</span>:<span class=hljs-number >10</span>)</code></pre>
+<p>Since generator carries an anonymous function, performance concerns about captured variables also applie to them. Consider the following functions:</p>
+<pre><code class="julia hljs"><span class=hljs-keyword >function</span> mygenmul(r0)
+    <span class=hljs-keyword >if</span> r0 &lt; <span class=hljs-number >0</span>
+        r0 = -r0
+    <span class=hljs-keyword >end</span>
+    <span class=hljs-keyword >return</span> (<span class=hljs-number >2</span>r0*x <span class=hljs-keyword >for</span> x <span class=hljs-keyword >in</span> <span class=hljs-number >1</span>:<span class=hljs-number >10</span>)
+<span class=hljs-keyword >end</span>
+
+<span class=hljs-keyword >function</span> mygenmul2(r0)
+    <span class=hljs-keyword >if</span> r0 &lt; <span class=hljs-number >0</span>
+        r0 = -r0
+    <span class=hljs-keyword >end</span>
+    <span class=hljs-keyword >return</span> <span class=hljs-keyword >let</span> r0 = r0
+        (<span class=hljs-number >2</span>r0*x <span class=hljs-keyword >for</span> x <span class=hljs-keyword >in</span> <span class=hljs-number >1</span>:<span class=hljs-number >10</span>)
+    <span class=hljs-keyword >end</span>
+<span class=hljs-keyword >end</span>
+
+mygen1 = mygenmul(-<span class=hljs-number >2</span>)
+mygen2 = mygenmul2(-<span class=hljs-number >2</span>)
+
+<span class=hljs-meta >@btime</span> sum($mygen1)
+<span class=hljs-meta >@btime</span> sum($mygen2)</code></pre>
+<pre><code class="plaintext hljs">LoadError: UndefVarError: @btime not defined
+in expression starting at none:2
+</code></pre>
+<p>The second function is markedely faster than the first one, precisely because of the issue with captured variables.</p>
+<h2 id=summary ><a href="#summary">Summary</a></h2>
+<p>There are many different ways of defining function-like objects in julia, which lets the function carry some external data. When used correctly, these objects help us write powerful and performant Julia code. On the other hand, there are somewhat subtle performance pitfalls that one needs to be aware of. Here is a short summary of what to do in different scenarios.</p>
+<ol>
+<li><p>If you want to change the binding of the data &#40;e.g. <a href="#closures">the <code>counter</code> example</a>, where <code>Closure.counter</code> needed to be updated&#41;, callable <code>mutable struct</code> is your best bet.</p>
+
+<li><p>If you want to modify the data from outside of the function, callable <code>struct</code> is the way to go, since you can easily access the data via <code>object.data</code>.</p>
+
+<li><p>If you don&#39;t need to directly access the data, and you don&#39;t need to change the binding, normal closure does the job. However, <a href="https://docs.julialang.org/en/v1/manual/performance-tips/#man-performance-captured">be careful</a> with captured variables, and <a href="#closure-and-let-blocks">use <code>let...end</code> blocks</a> as appropriate.</p>
+
+</ol>
+<p>I hope that was useful, and please feel free to send me some comments&#33;</p>
+<div class=page-foot >
+  <div class=copyright >
+    &copy; Tomohiro Soejima. Last modified: November 05, 2020. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> 
+  </div>
+</div>
+</div>
+        
+      
+    </table>

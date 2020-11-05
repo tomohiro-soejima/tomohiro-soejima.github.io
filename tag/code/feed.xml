@@ -4,7 +4,7 @@
   <description><![CDATA[Tomohiro Soejima&#39;s personal website
 ]]></description>
   <link>https://tomohiro-soejima.github.io/</link>
-  <atom:link href="https://tomohiro-soejima.github.io/feed.xml" rel="self" type="application/rss+xml" />
+  <atom:link href="https://tomohiro-soejima.github.io/tag/code/feed.xml" rel="self" type="application/rss+xml" />
   <item>
     <title>Function like objects and closures</title>
     <link>https://tomohiro-soejima.github.io/post1/</link>

@@ -1,0 +1,3 @@
+mul3(2) = 4
+LoadError: UndefVarError: @code_warntype not defined
+in expression starting at none:1
