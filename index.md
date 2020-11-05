@@ -15,7 +15,6 @@ email: tomohiro_soejima (at) berkeley (dot) edu
 
 [GitHub](https://github.com/tomohiro-soejima)
 ### About me
-
 My name is Tomohiro Soejima, and I am a physics graduate student at University of California, Berkeley. I am currently working with Prof. Mike Zaletel on tensor network techniques for strongly correlated systems. In my spare time, I can be found singing, playing contract bridge, reading about American history, or playing Shogi (将棋).
 
 ~~~
