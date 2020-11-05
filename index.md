@@ -7,7 +7,7 @@
 @@row
 @@container
 ~~~
-<img class="right" src="/assets/profile.jpg" alt="profile picture" <img src="/images/html5.gif"  style="width:300px;height:auto;">
+<img class="right" src="/assets/profile.jpg" alt="profile picture"  style="width:300px;height:auto;">
 ~~~
 Tomohiro Soejima (副島　智大)
 
