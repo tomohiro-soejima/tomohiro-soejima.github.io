@@ -20,7 +20,8 @@ html {
   margin-right: 15px; }
 
 .franklin-content .right {
-    float: right; }
+    float: right;
+    margin-left: 20px; }
 
 .franklin-content .container img {
     width: auto;
