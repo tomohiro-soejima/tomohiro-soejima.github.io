@@ -1,0 +1,4 @@
+typeof(f) == typeof(h) = false
+f == h = false
+typeof(f2) == typeof(h2) = false
+f2 == h2 = false

@@ -4,4 +4,4 @@ func = getfunc()
 
 using BenchmarkTools
 @btime $c()
-@btime $func()
+@btime $func();

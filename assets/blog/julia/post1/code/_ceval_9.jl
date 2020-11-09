@@ -1,6 +1,6 @@
 # This file was generated, do not modify it. # hide
 f(x) = 2x
-g(x) = 2x
+h(x) = 2x
 
 function mysum(f, data)
     sum = zero(eltype(data))
@@ -12,4 +12,4 @@ end
 data = rand(1000)
 @time mysum(f, data) # includes compilation time
 @time mysum(f, data) # after compilation
-@time mysum(g, data) # compilation again
+@time mysum(h, data) # compilation again

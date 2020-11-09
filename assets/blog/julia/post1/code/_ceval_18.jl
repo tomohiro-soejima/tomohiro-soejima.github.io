@@ -27,4 +27,4 @@ data = rand(1000)
 
 @btime mulsum0($r0, $data)
 @btime abmulsum1($r0, $data)
-@btime abmulsum2($r0, $data)
+@btime abmulsum2($r0, $data);

@@ -1,0 +1,9 @@
+mul3(2) = 4
+Variables
+  #self#::Main.FD_SANDBOX_543891907902936212.var"#24#25"{Int64}
+  x::Int64
+
+Body::Int64
+1 ─ %1 = Core.getfield(#self#, :r2)::Int64
+│   %2 = (x * %1)::Int64
+└──      return %2

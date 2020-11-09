@@ -1,0 +1,17 @@
+mul2(2) = 4
+Variables
+  #self#::Main.FD_SANDBOX_543891907902936212.var"#22#23"
+  x::Int64
+  r::Union{}
+
+Body::Int64
+1 ─ %1 = Core.getfield(#self#, :r)::CORE.BOX
+│   %2 = Core.isdefined(%1, :contents)::Bool
+└──      goto #3 if not %2
+2 ─      goto #4
+3 ─      Core.NewvarNode(:(r))
+└──      r
+4 ┄ %7 = Core.getfield(%1, :contents)::ANY
+│   %8 = Core.typeassert(%7, Main.FD_SANDBOX_543891907902936212.Int)::Int64
+│   %9 = (x * %8)::Int64
+└──      return %9

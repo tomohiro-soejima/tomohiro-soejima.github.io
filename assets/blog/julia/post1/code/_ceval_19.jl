@@ -19,4 +19,4 @@ mygen1 = mygenmul(-2)
 mygen2 = mygenmul2(-2)
 
 @btime sum($mygen1)
-@btime sum($mygen2)
+@btime sum($mygen2);

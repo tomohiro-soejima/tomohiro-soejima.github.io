@@ -10,4 +10,4 @@ end
 func2 = getfunc2()
 
 @btime $c()
-@btime $func2()
+@btime $func2();
