@@ -1,0 +1,188 @@
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/jemdoc.css"> <link rel=apple-touch-icon  sizes=180x180  href="/assets/apple-touch-icon.png"> <link rel=icon  type="image/png" sizes=32x32  href="/assets/favicon-32x32.png"> <link rel=icon  type="image/png" sizes=16x16  href="/assets/favicon-16x16.png"> <link rel=manifest  href="/assets/site.webmanifest"> <title>Why physicists should use GitHub</title> <table id=tlayout > <tr valign=top > <td id=layout-menu > <div class="menu-item "><a href="/">home</a></div> <div class=menu-category >julia</div> <div class="menu-item "><a href="/blog/julia/post1/">Closure</a></div> <div class=menu-category >spin chain</div> <div class="menu-item "><a href="/blog/spin/post1/">sparseTFIM</a></div> <div class=menu-category >GitHub</div> <div class="menu-item "><a href="/blog/GitHub/post1/">Why GitHub?</a></div> <td id=layout-content > <br> <div class="container blog-title"> <h1>Why physicists should use GitHub</h1> <h3> <span style="font-weight: lighter;"> posted: 2020-11-11 </span> | <span style="font-weight: bold;">Tomohiro Soejima</span> </h3> </div> <br> <div class=franklin-content ><p>Numerical calculation has become increasingly more important for physicists, whether you are a hardcore computational physicist who spend most of your time in the login shell of a supercomputer, or if you are more analytically minded theorist who uses numerics to prove a point. However, most physicists are not computer scientists by training, and we often fail to make the best use of existing machineries around programming.</p> <p>One prominent example is the relatively slow introduction of <a href="https://github.com/">GitHub</a>, and version control system in general. This post explains why you should use GitHub, and also how to use <code>git</code> and GitHub.</p> <div class=franklin-toc ><ol><li><a href="#why_version_control_system">Why version control system?</a><ol><li><a href="#problem_statement">Problem statement</a><li><a href="#what_went_wrong">What went wrong?</a></ol><li><a href="#lightining_introduction_to_git">Lightining introduction to git</a><ol><li><a href="#your_first_commit">Your first commit</a><li><a href="#power_of_branching">Power of branching</a><li><a href="#further_reading">Further reading</a></ol><li><a href="#going_online_github">Going online: GitHub</a><ol><li><a href="#creating_your_first_github_repo">Creating your first GitHub repo</a><li><a href="#creating_a_pull_request">Creating a pull request</a><li><a href="#further_reading__2">Further reading</a></ol><li><a href="#summary">Summary</a></ol></div> <h2 id=why_version_control_system ><a href="#why_version_control_system">Why version control system?</a></h2> <h3 id=problem_statement ><a href="#problem_statement">Problem statement</a></h3> <h4 id=merging_mess ><a href="#merging_mess">Merging mess</a></h4> <p>Let me first explain what kind of problem we are trying to solve. Let&#39;s imagine three scientists, Alice, Bob, and Charlie are working on a computational script. The script, <code>my_awesome_code.py</code> is in a good enough shape, but Alice has found a minor bug in the code, so she fixes it, and saves it in her local computer. However, Bob was working on the same script in the mean time, and he has added a new function to the script. He sends the code to Alice, and Alice saves it as <code>my_awesome_code_Bob_newfunc.py</code>. Charlie, on the other hand, has been working on speeding up the script, he sends his new version of the script to Alice, who renames it <code>my_awesome_code_Charlie_performance_gain.py</code>. Now, Alice needs to figure out which part has changed in Bob&#39;s script and Charlie&#39;s script, copy and paste the correct part, and update <code>my_awesome_code.py</code>. As you are almost done in the process, however, Bob says he has found a bug in a different part of the code, and he sends Alice a new version of the script, which she then needs to fix...</p> <p>At the end of the day, Alice&#39;s directory looks something like this:</p> <img src="/assets/blog/GitHub/post1/Capture.PNG" alt="many many versions of the same script..."> <h4 id=dropbox_to_the_rescue ><a href="#dropbox_to_the_rescue">Dropbox to the rescue?</a></h4> <p>Alice concludes that the issue was lack of synchronization. The three of them were editing different scripts, and that is why Alice needed to the tedious <strong>merging</strong> procedure in order to reflect change that Bob and Charlie made. Fortunately, there is a technology for solving this problem&#33; Many cloud storage services such as Dropbox offer near-simultaneous synching of remote folders. So Alice, Bob and Charlie sets up a shared Dropbox folder, and start editing the files there. Everything is working smoothly, and there&#39;s no need to tedious merging procedure.</p> <p>That is until one day, Alice opens up her terminal as usual, and runs her <code>my_awesome_code.py</code> script as usual. However, this time around, the code crashes, emitting ominous-looking error messages. What went wrong? The code ran just fine last time Alice ran it. She concludes it must be a fix Bob or Charlie introduced, and quickly goes to check the file&#39;s history. To her horror, Bob and Charlie has introduced many changes to the code in her sleep &#40;they are in different timezones&#41;, and Alice needs to track down which change caused the bug. Looks like Alice needs to spend another long day, hunting down all the code changes...</p> <h3 id=what_went_wrong ><a href="#what_went_wrong">What went wrong?</a></h3> <p>What went wrong with these two scenarios? In the first scenario, as Alice correctly identified, the issue was the lack of any synchronization. However, the second scenario did not turn out particularly well either because there was perhaps <em>too much</em> synchronization. When synchronization is simultaneous, there&#39;s a room for collision of different changes, and it becomes hard to control which version of the code you are using.</p> <p>We need to have the best of both worlds. We need to have some synchronization, so that Alice does not need to spend a day merging all the changes. On the other hand, we also need a better control over the state of the file than what simple cloud storage services provide. This is what <strong>version control system</strong> aims to provide. As it turns out the combination of <code>git</code> and GitHub is the most widely used version control ecosystem in the world, and we will focus our attention to these services next.</p> <h2 id=lightining_introduction_to_git ><a href="#lightining_introduction_to_git">Lightining introduction to git</a></h2> <h3 id=your_first_commit ><a href="#your_first_commit">Your first commit</a></h3> <p>Here is a lightening introduction to syntax of <code>git</code>. I assume you have access to command-line interface to git. If you are Mac or Linux user, it is most likely installed on your computer. If you are using Windows, download <a href="https://gitforwindows.org/">Git for Windows</a>.</p> <p>Lauch your terminal &#40;or Git Bash if you are on Windows&#41;. In order to check git is installed, run</p> <pre><code class="bash hljs">$ git --version</code></pre>
+<p>It should print the git version. Let&#39;s make a new directory somewhere and <code>cd</code> to it.</p>
+<pre><code class="bash hljs">$ mkdir gittest
+$ <span class=hljs-built_in >cd</span> gittest</code></pre>
+<p>We make it into a git repository via <code>git init</code> command.</p>
+<pre><code class="bash hljs">$ git init</code></pre>
+<p>What does it mean for a folder to be a git repository? It means git has created a hidden folder named <code>.git</code> in the directory that stores version information among other things. You can check the presence of <code>.git</code> repository via <code>ls</code>command.</p>
+<pre><code class="bash hljs">$ ls -la
+
+drwxr-xr-x 1 tomos 000000 0 Nov 11 01:04 ./
+drwxr-xr-x 1 tomos 000000 0 Nov 11 01:04 ../
+drwxr-xr-x 1 tomos 000000 0 Nov 11 01:04 .git/</code></pre>
+<p>Let&#39;s create some content in the directory. Using your favorite text editor, create <code>README.md</code> in the directory. Its content does not really matter. Once you do that, run</p>
+<pre><code class="bash hljs">$ git status
+On branch main
+
+No commits yet
+
+Untracked files:
+  (use <span class=hljs-string >&quot;git add &lt;file&gt;...&quot;</span> to include <span class=hljs-keyword >in</span> what will be committed)
+        README.md
+
+nothing added to commit but untracked files present (use <span class=hljs-string >&quot;git add&quot;</span> to track)</code></pre>
+<p><code>git status</code> displays the status of the git directory. You see <code>README.md</code> appears as untracked. It means that git is aware of the existence of the file, but it is not tracking the file for the purpose of version control. In particular, untracked files will not be saved to version history when we perform <code>git commit</code> later on.</p>
+<p>To tell git to include <code>README.md</code> to version history, run</p>
+<pre><code class="bash hljs">$ git add README.md
+$ git status
+On branch main
+
+No commits yet
+
+Changes to be committed:
+  (use <span class=hljs-string >&quot;git rm --cached &lt;file&gt;...&quot;</span> to unstage)
+        new file:   README.md</code></pre>
+<p>Now the file appears <strong>staged</strong>. This means that git is ready to save it to version history, <em>but it has not yet done so</em>. In order to save it to version history, you need to <code>commit</code>.</p>
+<pre><code class="bash hljs">$ git commit -m <span class=hljs-string >&quot;my first commit&quot;</span>
+$ git <span class=hljs-built_in >log</span> <span class=hljs-comment ># prints a log</span>
+
+commit 9fc450ddec2egfff3127g95ef28d551f47924egff (HEAD -&gt; master)
+Author: Tomo Soejima &lt;mymail@mydomain.edu&gt;
+Date:   Mon Jan 01 00:00:00 2020 -0800
+
+    my first commit</code></pre>
+<p>As you see, now you have created your first commit.</p>
+<p>Let&#39;s review some definitions. </p>
+<ul>
+<li><p>A <strong>commit</strong> is a snapshot of the current state of the directory. It does <strong>not</strong> include untracked files.</p>
+
+<li><p>An <strong>untracked</strong> file is a file that has been changed, but git will not save to the version history &#40;i.e. commits&#41;.</p>
+
+<li><p>A <strong>staged</strong> file is a file that&#39;s ready for a commit. When you execute <code>git commit</code> next time, the content of the staged file will be saved to the next commit.</p>
+
+</ul>
+<p>So the workflow is</p>
+<ol>
+<li><p>Change the content of the directory, by creating a new file, modifying an existing file, deleting a file, or any combination of these.</p>
+
+<li><p>Stage the changes via <code>git add</code>.</p>
+
+<li><p>Commit the change with a commit message via <code>commit -m &quot;my commit message&quot;</code>.</p>
+
+<li><p>Repeat.</p>
+
+</ol>
+<p>This already distinguishes git from more familiar cloud storage services. While cloud storage services often provide automatic synchronization, you need to explicitly tell git via <code>git commit</code> command when you want the version history to be saved. </p>
+<h3 id=power_of_branching ><a href="#power_of_branching">Power of branching</a></h3>
+<p>So far, we have only worked with completely linear version history. This might be okay if you are working on your own on a very simple project, but once you have multiple moving parts, a linear history will not cut it &#40;think of poor Alice&#41;. To save you from such sorrow, git has a capability of <strong>branching</strong>. Think of a history consisting of multiple branches, each of which representing something different.</p>
+<p>Let&#39;s create a new branch.</p>
+<pre><code class="bash hljs">$ git branch new_branch
+$ git branch <span class=hljs-comment ># lists branches</span>
+
+* main
+  new_branch</code></pre>
+<p>You see you now have two branches. Let&#39;s <code>switch</code> to the new branch, and create a file <code>README_new.md</code> with your favorite text editor.</p>
+<pre><code class="bash hljs">$ git switch new_branch
+$ touch README_new.md <span class=hljs-comment ># create a new file</span>
+$ ls
+README.md README_new.md
+$ git add README_new.md
+$ git commit -m <span class=hljs-string >&quot;add README_new.md&quot;</span>
+$ git <span class=hljs-built_in >log</span>
+
+commit 69a9b6692e03c9a808c0052659f84d587317c468d (HEAD -&gt; new_branch)
+Author: Tomo Soejima &lt;tomohiro_soejima@berkeley.edu&gt;
+Date:   Mon Jan 01 00:00:00 2020 -0800
+
+
+    add README_new.md
+
+commit 9fc450ddec2egfff3127g95ef28d551f47924egff (master)
+Author: Tomo Soejima &lt;tomohiro_soejima@berkeley.edu&gt;
+Date:   Mon Jan 01 00:00:00 2020 -0800
+
+    my first commit</code></pre>
+<p>Now, you can go back to the branch <code>main</code>, and check the content of that branch has not been changed.</p>
+<pre><code class="bash hljs">$ git switch main
+$ ls</code></pre>
+<p>You can even create a new file here.</p>
+<pre><code class="bash hljs">$ touch README_main.md
+$ git add README_main.md
+$ git commit -m <span class=hljs-string >&quot;add README_main.md&quot;</span>
+$ ls
+README.md README_main.md</code></pre>
+<p>Now the content of the branch <code>main</code> is not older than <code>new_branch</code>; it is completely different&#33; They represent two very different versions of history.</p>
+<p>In order to incorporate the content of <code>new_branch</code> into <code>main</code>, you run <code>merge</code>.</p>
+<pre><code class="bash hljs">$ git status <span class=hljs-comment ># make sure you are on main</span>
+$ git merge new_branch
+$ ls
+README.md README_main.md README_new.md</code></pre>
+<p>Hooray, you have successfully merged the content of two diversing versions of history, just with a line of command.</p>
+<p>Let&#39;s recap</p>
+<ul>
+<li><p>A <strong>branch</strong> is a label for particular commit. You are &#40;almost&#41; always <strong>on</strong> a particular branch. The label moves to a new commit whenever you create a new commit.</p>
+
+<li><p><code>switch</code> command can be used to move from one branch to another.</p>
+
+<li><p><code>merge</code> is used to incorporate the content of one branch to another.</p>
+
+</ul>
+<h3 id=further_reading ><a href="#further_reading">Further reading</a></h3>
+<p>The concept around commits and branches are rather confusing to the beginners, especially because the terminology is not very straightforward. I&#39;ve also simplified some aspects drastically for explanation. Here are a couple of references to help you get used to git maneuvers.</p>
+<ul>
+<li><p><a href="https://learngitbranching.js.org/?locale&#61;ja">Learn git branching</a> is an interactive WebUI that teaches you how various git commands work.</p>
+
+<li><p><a href="https://git-scm.com/book/en/v2">Pro git book</a>, is a self-contained guide to git.</p>
+
+</ul>
+<p>Moreover, many of you may find more graphical approach to using Git more intuitive. Here are a couple of recommendations</p>
+<ul>
+<li><p><a href="https://desktop.github.com/">GitHub Desktop</a> offers a simple GUI for managing your git and github repositories.</p>
+
+<li><p>Similarly, <a href="https://www.sourcetreeapp.com/">Sourcetree</a> and <a href="https://www.gitkraken.com/">GitKraken</a> are great free GUI&#39;s for git. I personally prefer GitKraken since it works on Linux.</p>
+
+<li><p>Various text editors and IDE&#39;s also support GUI-like capabilities. I recommend you check out <a href="https://code.visualstudio.com/docs/editor/versioncontrol">Visual Studio Code</a> &#40;this is how I use git most of these days&#41;.</p>
+
+</ul>
+<h2 id=going_online_github ><a href="#going_online_github">Going online: GitHub</a></h2>
+<p>In the previous section, we looked at how to make a git repository on your computer. However, in order to share your work, you should use a so-called <strong>remote repository</strong>. GitHub is a cloud service for remote repositories.</p>
+<h3 id=creating_your_first_github_repo ><a href="#creating_your_first_github_repo">Creating your first GitHub repo</a></h3>
+<p>After creating a GitHub account, create a repository following the instruction <a href="https://docs.github.com/en/free-pro-team@latest/github/importing-your-projects-to-github/adding-an-existing-project-to-github-using-the-command-line">here</a>. You can ignore steps 2 through 6, since we have already done that.</p>
+<p>After that, you can navigate to <code>your_remote_repository_url</code>, and you should see the content of your repository on GitHub.</p>
+<h3 id=creating_a_pull_request ><a href="#creating_a_pull_request">Creating a pull request</a></h3>
+<p>A major part of using GitHub is creating <strong>Pull Requests</strong>. A pull request is a request to merge the content of one branch to another branch. In order to help with this, GitHub comes with a nice graphical interface for reviewing the changes that come with the merge. &#40;The name is a bit misleading. It may be more accurately described as a <strong>merge</strong> request.&#41;</p>
+<p>Let&#39;s get back to the command line, and change the content of <code>new_branch</code> branch.</p>
+<pre><code class="bash hljs">$ git switch new_branch
+$ vim README.md <span class=hljs-comment ># use your favorite text editor</span>
+$ cat README.md <span class=hljs-comment ># print the content</span>
+Test <span class=hljs-keyword >for</span> Pull Request
+(The content of the file does not really matter)
+$ git add README.md
+$ git commit -m <span class=hljs-string >&quot;update README.md&quot;</span>
+$ git push origin new_branch</code></pre>
+<p>Let&#39;s move to your remote repository URL. Navigate to the pull request tab. You should see a button for &quot;new pull request&quot;. Once you click the button, it will show something like</p>
+<pre><code class="bash hljs">base: master &lt;- compare:master</code></pre>
+<p>Change this to</p>
+<pre><code class="bash hljs">base: master &lt;- compare:new_branch</code></pre>
+<p>You can now create a pull request. Once a pull request has been created, it receives a dedicated url &#40;it should look something like <code>github.com/your_user_name/your_repository/pull/1</code>&#41;, and you can comment on your pull request. There&#39;s not much to do though, so just click &quot;merge pull request&quot; and &quot;confirm and merge&quot;. Now, if you navigate again to the main page of your repository, you should see your README.md has been updated to include the content from <code>new_branch</code> branch.</p>
+<p>As is, this does not look particularly useful. Why do you need to go through such hoops and create a pull request? The full power of pull requests becomes apparent once you start collaborating with other people. Suppose Charlie wanted to improve performance of <code>my_awesome_code.py</code>. With the help of GitHub, he can work on this in a new branch, and implement his changes within that branch. Once he is done with it, he can create a pull request, and then Alice can review the pull request to decide whether to accept the changes or not. Until she approves the pull request, the code in the <code>main</code> branch <em>does not change</em>, insulating it from any bugs that may have been introduced by Charlie&#39;s half-clever performance improvements.</p>
+<p>To recap:</p>
+<ul>
+<li><p>A <strong>remote repository</strong> is a URL used to store your git repository in the cloud.</p>
+
+<li><p>A <strong>pull request</strong> is a request to merge a branch to another branch. It comes with a nice browser interface.</p>
+
+<li><p>Pull request allows changes to be implemented without affecting the production code.</p>
+
+</ul>
+<h3 id=further_reading__2 ><a href="#further_reading__2">Further reading</a></h3>
+<p>I only scratched the surface of how to use GitHub. </p>
+<ul>
+<li><p>There are certain &quot;git branching models&quot; people use to keep track of projects. As a starter, <a href="https://guides.github.com/introduction/flow/">GitHub flow</a> is probably the most straightforward one to use.</p>
+
+<li><p><a href="https://guides.github.com/">GitHub Guides</a> seem to contain a set of very useful guides for beginners of GitHub.</p>
+
+<li><p>You can find other online resources for your specific need. Most likely someone has alread asked &#40;and answered&#41; your question before&#33;</p>
+
+</ul>
+<h2 id=summary ><a href="#summary">Summary</a></h2>
+<p>Git and GitHub are great tools that help you collaborate with other scientists more easily. Even though the initial learning curve is rather steep, once you get used to them, these tools make collaboration a lot easier and a lot less painful. I hope this article helped lessen the activation barrier for learning GitHub a bit, and I hope you enjoy a productive coding life&#33;</p>
+<div class=page-foot >
+  <div class=copyright >
+    &copy; Tomohiro Soejima. Last modified: November 11, 2020. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> 
+  </div>
+</div>
+</div>
+        
+      
+    </table>

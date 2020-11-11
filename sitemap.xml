@@ -44,6 +44,12 @@
     <priority>0.5</priority>
 </url>
 <url>
+    <loc>https://tomohiro-soejima.github.io/blog/GitHub/post1/index.html</loc>
+    <lastmod>2020-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+</url>
+<url>
     <loc>https://tomohiro-soejima.github.io/blog/spin/post1/index.html</loc>
     <lastmod>2020-11-11</lastmod>
     <changefreq>monthly</changefreq>
