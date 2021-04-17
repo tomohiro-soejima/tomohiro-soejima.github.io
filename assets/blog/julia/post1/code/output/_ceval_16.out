@@ -1,6 +1,6 @@
 mul3(2) = 4
 Variables
-  #self#::Main.FD_SANDBOX_543891907902936212.var"#24#25"{Int64}
+  #self#::Main.FD_SANDBOX_543891907902936212.var"#20#21"{Int64}
   x::Int64
 
 Body::Int64

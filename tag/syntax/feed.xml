@@ -1,49 +1,137 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-<channel>
-  <title>Tomohiro Soejima</title>
-  <description><![CDATA[Tomohiro Soejima&#39;s personal website
-]]></description>
-  <link>https://tomohiro-soejima.github.io/</link>
-  <atom:link href="https://tomohiro-soejima.github.io/tag/syntax/feed.xml" rel="self" type="application/rss+xml" />
-  <item>
-    <title>Function like objects and closures</title>
-    <link>https://tomohiro-soejima.github.io/blog/julia/post1/</link>
-    <description><![CDATA[Function-like objects in Julia
-<br><a href="https://tomohiro-soejima.github.io/blog/julia/post1/">Read more</a>]]></description>
-    <guid>https://tomohiro-soejima.github.io/blog/julia/post1/</guid>
-    <pubDate>Wed, 11 Nov 2020 00:00:00 UT</pubDate>
-  </item>
-  <item>
-    <title>Why physicists should use GitHub</title>
-    <link>https://tomohiro-soejima.github.io/blog/GitHub/post1/</link>
-    <description><![CDATA[This post explains how to create transverse field Ising model
-<br><a href="https://tomohiro-soejima.github.io/blog/GitHub/post1/">Read more</a>]]></description>
-    <guid>https://tomohiro-soejima.github.io/blog/GitHub/post1/</guid>
-    <pubDate>Wed, 11 Nov 2020 00:00:00 UT</pubDate>
-  </item>
-  <item>
-    <title>How to create transverse field Ising model Hamiltonian</title>
-    <link>https://tomohiro-soejima.github.io/blog/spin/post1/</link>
-    <description><![CDATA[This post explains how to create transverse field Ising model
-<br><a href="https://tomohiro-soejima.github.io/blog/spin/post1/">Read more</a>]]></description>
-    <guid>https://tomohiro-soejima.github.io/blog/spin/post1/</guid>
-    <pubDate>Wed, 11 Nov 2020 00:00:00 UT</pubDate>
-  </item>
-  <item>
-    <title>More goodies</title>
-    <link>https://tomohiro-soejima.github.io/menu2/</link>
-    <description><![CDATA[A short description of the page which would serve as <strong>blurb</strong> in a <code>RSS</code> feed; you can use basic markdown here but the whole description string must be a single line &#40;not a multiline string&#41;. Like this one for instance. Keep in mind that styling is minimal in RSS so for instance don&#39;t expect maths or fancy styling to work; images should be ok though: <img src="https://upload.wikimedia.org/wikipedia/en/b/b0/Rick_and_Morty_characters.jpg" alt="" />
-<br><a href="https://tomohiro-soejima.github.io/menu2/">Read more</a>]]></description>
-    <guid>https://tomohiro-soejima.github.io/menu2/</guid>
-    <pubDate>Wed, 1 May 2019 00:00:00 UT</pubDate>
-  </item>
-  <item>
-    <title>Code blocks2</title>
-    <link>https://tomohiro-soejima.github.io/menu1/</link>
-    <description><![CDATA[A short description of the page which would serve as <strong>blurb</strong> in a <code>RSS</code> feed; you can use basic markdown here but the whole description string must be a single line &#40;not a multiline string&#41;. Like this one for instance. Keep in mind that styling is minimal in RSS so for instance don&#39;t expect maths or fancy styling to work; images should be ok though: <img src="https://upload.wikimedia.org/wikipedia/en/3/32/Rick_and_Morty_opening_credits.jpeg" alt="" />
-<br><a href="https://tomohiro-soejima.github.io/menu1/">Read more</a>]]></description>
-    <guid>https://tomohiro-soejima.github.io/menu1/</guid>
-    <pubDate>Fri, 22 Mar 2019 00:00:00 UT</pubDate>
-  </item>
-</channel>
-</rss>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<rss version="2.0"
+  xmlns:content="http://purl.org/rss/1.0/modules/content/"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:media="http://search.yahoo.com/mrss/"
+  xmlns:atom="http://www.w3.org/2005/Atom"
+  xmlns:georss="http://www.georss.org/georss">
+
+  <channel>
+    <title>
+      <![CDATA[  {{fd2rss website_title}}  ]]>
+    </title>
+    <link> {{website_url}} </link>
+    <description>
+      <![CDATA[  {{fd2rss website_description}}  ]]>
+    </description>
+    <atom:link
+      href="{{fd_rss_feed_url}}"
+      rel="self"
+      type="application/rss+xml" />
+
+
+<item>
+  <title>
+    <![CDATA[  Quick guide to Julia  ]]>
+  </title>
+  <link> https://tomohiro-soejima.github.io/blog/julia/post2/index.html </link>
+  <guid> https://tomohiro-soejima.github.io/blog/julia/post2/index.html </guid>
+  <description>
+    <![CDATA[  Quick guide to julia  ]]>
+  </description>  
+    
+  <pubDate>Sat, 17 Apr 2021 00:00:00 +0000</pubDate>  
+  
+  
+  <atom:author>
+    <atom:name>Tomohiro Soejima</atom:name>
+  </atom:author>
+        
+</item>
+
+<item>
+  <title>
+    <![CDATA[  Function like objects and closures  ]]>
+  </title>
+  <link> https://tomohiro-soejima.github.io/blog/julia/post1/index.html </link>
+  <guid> https://tomohiro-soejima.github.io/blog/julia/post1/index.html </guid>
+  <description>
+    <![CDATA[  Function-like objects in Julia  ]]>
+  </description>  
+    
+  <pubDate>Sat, 17 Apr 2021 00:00:00 +0000</pubDate>  
+  
+  
+  <atom:author>
+    <atom:name>Tomohiro Soejima</atom:name>
+  </atom:author>
+        
+</item>
+
+<item>
+  <title>
+    <![CDATA[  Why physicists should use GitHub  ]]>
+  </title>
+  <link> https://tomohiro-soejima.github.io/blog/GitHub/post1/index.html </link>
+  <guid> https://tomohiro-soejima.github.io/blog/GitHub/post1/index.html </guid>
+  <description>
+    <![CDATA[  This post explains how to create transverse field Ising model  ]]>
+  </description>  
+    
+  <pubDate>Sat, 17 Apr 2021 00:00:00 +0000</pubDate>  
+  
+  
+  <atom:author>
+    <atom:name>Tomohiro Soejima</atom:name>
+  </atom:author>
+        
+</item>
+
+<item>
+  <title>
+    <![CDATA[  How to create transverse field Ising model Hamiltonian  ]]>
+  </title>
+  <link> https://tomohiro-soejima.github.io/blog/spin/post1/index.html </link>
+  <guid> https://tomohiro-soejima.github.io/blog/spin/post1/index.html </guid>
+  <description>
+    <![CDATA[  This post explains how to create transverse field Ising model  ]]>
+  </description>  
+    
+  <pubDate>Sat, 17 Apr 2021 00:00:00 +0000</pubDate>  
+  
+  
+  <atom:author>
+    <atom:name>Tomohiro Soejima</atom:name>
+  </atom:author>
+        
+</item>
+
+<item>
+  <title>
+    <![CDATA[  More goodies  ]]>
+  </title>
+  <link>  </link>
+  <guid>  </guid>
+  <description>
+    <![CDATA[  A short description of the page which would serve as <strong>blurb</strong> in a <code>RSS</code> feed; you can use basic markdown here but the whole description string must be a single line &#40;not a multiline string&#41;. Like this one for instance. Keep in mind that styling is minimal in RSS so for instance don&#39;t expect maths or fancy styling to work; images should be ok though: <img src="https://upload.wikimedia.org/wikipedia/en/b/b0/Rick_and_Morty_characters.jpg" alt="" />  ]]>
+  </description>  
+    
+  <pubDate>Wed, 01 May 2019 00:00:00 +0000</pubDate>  
+  
+  
+  <atom:author>
+    <atom:name>Tomohiro Soejima</atom:name>
+  </atom:author>
+        
+</item>
+
+<item>
+  <title>
+    <![CDATA[  Code blocks2  ]]>
+  </title>
+  <link> https://tomohiro-soejima.github.io/menu1/index.html </link>
+  <guid> https://tomohiro-soejima.github.io/menu1/index.html </guid>
+  <description>
+    <![CDATA[  A short description of the page which would serve as <strong>blurb</strong> in a <code>RSS</code> feed; you can use basic markdown here but the whole description string must be a single line &#40;not a multiline string&#41;. Like this one for instance. Keep in mind that styling is minimal in RSS so for instance don&#39;t expect maths or fancy styling to work; images should be ok though: <img src="https://upload.wikimedia.org/wikipedia/en/3/32/Rick_and_Morty_opening_credits.jpeg" alt="" />  ]]>
+  </description>  
+    
+  <pubDate>Fri, 22 Mar 2019 00:00:00 +0000</pubDate>  
+  
+  
+  <atom:author>
+    <atom:name>Tomohiro Soejima</atom:name>
+  </atom:author>
+        
+</item>
+</channel></rss>

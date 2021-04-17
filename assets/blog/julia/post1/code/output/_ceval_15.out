@@ -1,6 +1,6 @@
 mul2(2) = 4
 Variables
-  #self#::Main.FD_SANDBOX_543891907902936212.var"#22#23"
+  #self#::Main.FD_SANDBOX_543891907902936212.var"#18#19"
   x::Int64
   r::Union{}
 
