@@ -1,4 +1,4 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=google-site-verification  content=kpHYuhI7h81XOVXWEEDn36Yf-_kjnQVC7Acac_desn8  /> <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/jemdoc.css"> <link rel=apple-touch-icon  sizes=180x180  href="/assets/apple-touch-icon.png"> <link rel=icon  type="image/png" sizes=32x32  href="/assets/favicon-32x32.png"> <link rel=icon  type="image/png" sizes=16x16  href="/assets/favicon-16x16.png"> <link rel=manifest  href="/assets/site.webmanifest"> <title>Function like objects and closures</title> <table id=tlayout > <tr valign=top > <td id=layout-menu > <div class="menu-item "><a href="/">home</a></div> <div class=menu-category >julia</div> <div class="menu-item "><a href="/blog/julia/post1/">Closure</a></div> <div class="menu-item "><a href="/blog/julia/post2/">QuickJulia</a></div> <div class=menu-category >spin chain</div> <div class="menu-item "><a href="/blog/spin/post1/">sparseTFIM</a></div> <div class=menu-category >GitHub</div> <div class="menu-item "><a href="/blog/GitHub/post1/">Why GitHub?</a></div> <td id=layout-content > <br> <div class="container blog-title"> <h1>Function like objects and closures</h1> <h3> <span style="font-weight: lighter;"> posted: 2020-11-05 | last modified: 2022-01-31 </span> | <span style="font-weight: bold;">Tomohiro Soejima</span> </h3> </div> <br> <div class=franklin-content ><p>Functions are &quot;first-class citizens&quot; in julia. Accordingly, there are a lot of neat tricks you can play with functions such as function closures. On the other hand, there are some pitfalls when using functions that were not obvious to me at first sight. This post is an attempt to document and clarify how functions behave.</p> <div class=franklin-toc ><ol><li><a href="#julia_functions">Julia functions</a><ol><li><a href="#julia_functions_are_first-class_citizens">Julia functions are first-class citizens</a><li><a href="#julia_functions_are_their_own_types">Julia functions are their own types</a></ol><li><a href="#function-like_objects">Function-like objects</a><ol><li><a href="#defining_callable_type">Defining callable type</a><li><a href="#closures">Closures</a><li><a href="#not_all_closures_are_created_equal">Not all closures are created equal</a><li><a href="#closure_and_let_blocks">Closure and let blocks</a><li><a href="#miscallaneous_anonymous_function_appearances">Miscallaneous anonymous function appearances</a></ol><li><a href="#summary_and_performance_tips">Summary and performance tips</a></ol></div> <h2 id=julia_functions ><a href="#julia_functions" class=header-anchor >Julia functions</a></h2> <h3 id=julia_functions_are_first-class_citizens ><a href="#julia_functions_are_first-class_citizens" class=header-anchor >Julia functions are first-class citizens</a></h3> <p>You can define a <strong>named</strong> function and assign that to a variable.</p> <pre><code class=language-julia >f&#40;x&#41; &#61; 2x
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/jemdoc.css"> <link rel=apple-touch-icon  sizes=180x180  href="/assets/apple-touch-icon.png"> <link rel=icon  type="image/png" sizes=32x32  href="/assets/favicon-32x32.png"> <link rel=icon  type="image/png" sizes=16x16  href="/assets/favicon-16x16.png"> <link rel=manifest  href="/assets/site.webmanifest"> <title>Function like objects and closures</title> <meta name=google-site-verification  content=kpHYuhI7h81XOVXWEEDn36Yf-_kjnQVC7Acac_desn8  /> <table id=tlayout > <tr valign=top > <td id=layout-menu > <div class="menu-item "><a href="/">home</a></div> <div class=menu-category >julia</div> <div class="menu-item "><a href="/blog/julia/post1/">Closure</a></div> <div class="menu-item "><a href="/blog/julia/post2/">QuickJulia</a></div> <div class=menu-category >spin chain</div> <div class="menu-item "><a href="/blog/spin/post1/">sparseTFIM</a></div> <div class=menu-category >GitHub</div> <div class="menu-item "><a href="/blog/GitHub/post1/">Why GitHub?</a></div> <td id=layout-content > <br> <div class="container blog-title"> <h1>Function like objects and closures</h1> <h3> <span style="font-weight: lighter;"> posted: 2020-11-05 | last modified: 2022-01-31 </span> | <span style="font-weight: bold;">Tomohiro Soejima</span> </h3> </div> <br> <div class=franklin-content ><p>Functions are &quot;first-class citizens&quot; in julia. Accordingly, there are a lot of neat tricks you can play with functions such as function closures. On the other hand, there are some pitfalls when using functions that were not obvious to me at first sight. This post is an attempt to document and clarify how functions behave.</p> <div class=franklin-toc ><ol><li><a href="#julia_functions">Julia functions</a><ol><li><a href="#julia_functions_are_first-class_citizens">Julia functions are first-class citizens</a><li><a href="#julia_functions_are_their_own_types">Julia functions are their own types</a></ol><li><a href="#function-like_objects">Function-like objects</a><ol><li><a href="#defining_callable_type">Defining callable type</a><li><a href="#closures">Closures</a><li><a href="#not_all_closures_are_created_equal">Not all closures are created equal</a><li><a href="#closure_and_let_blocks">Closure and let blocks</a><li><a href="#miscallaneous_anonymous_function_appearances">Miscallaneous anonymous function appearances</a></ol><li><a href="#summary_and_performance_tips">Summary and performance tips</a></ol></div> <h2 id=julia_functions ><a href="#julia_functions" class=header-anchor >Julia functions</a></h2> <h3 id=julia_functions_are_first-class_citizens ><a href="#julia_functions_are_first-class_citizens" class=header-anchor >Julia functions are first-class citizens</a></h3> <p>You can define a <strong>named</strong> function and assign that to a variable.</p> <pre><code class=language-julia >f&#40;x&#41; &#61; 2x
 g &#61; f
 
 g # show this</code></pre><pre><code class="plaintext code-output">f (generic function with 1 method)</code></pre>
@@ -97,9 +97,9 @@ end
 data &#61; rand&#40;1000&#41;
 @time mysum&#40;f, data&#41; # includes compilation time
 @time mysum&#40;f, data&#41; # after compilation
-@time mysum&#40;h, data&#41; # compilation again</code></pre><pre><code class="plaintext code-output">  0.004349 seconds (9.88 k allocations: 492.675 KiB)
+@time mysum&#40;h, data&#41; # compilation again</code></pre><pre><code class="plaintext code-output">  0.005358 seconds (9.88 k allocations: 492.675 KiB)
   0.000001 seconds
-  0.003683 seconds (5.80 k allocations: 287.255 KiB)
+  0.004538 seconds (5.80 k allocations: 287.255 KiB)
 </code></pre>
 <h2 id=function-like_objects ><a href="#function-like_objects" class=header-anchor >Function-like objects</a></h2>
 <h3 id=defining_callable_type ><a href="#defining_callable_type" class=header-anchor >Defining callable type</a></h3>
@@ -189,8 +189,8 @@ func &#61; getfunc&#40;&#41;
 
 using BenchmarkTools
 @btime &#36;c&#40;&#41;
-@btime &#36;func&#40;&#41;;</code></pre><pre><code class="plaintext code-output">  1.600 ns (0 allocations: 0 bytes)
-  21.141 ns (1 allocation: 16 bytes)
+@btime &#36;func&#40;&#41;;</code></pre><pre><code class="plaintext code-output">  2.000 ns (0 allocations: 0 bytes)
+  20.240 ns (1 allocation: 16 bytes)
 </code></pre>
 <p>Type annotation somewhat helps, but it is not enough to eliminate the performance gap.</p>
 <pre><code class=language-julia >function getfunc2&#40;&#41;
@@ -204,8 +204,8 @@ end
 func2 &#61; getfunc2&#40;&#41;
 
 @btime &#36;c&#40;&#41;
-@btime &#36;func2&#40;&#41;;</code></pre><pre><code class="plaintext code-output">  1.599 ns (0 allocations: 0 bytes)
-  10.000 ns (1 allocation: 16 bytes)
+@btime &#36;func2&#40;&#41;;</code></pre><pre><code class="plaintext code-output">  1.900 ns (0 allocations: 0 bytes)
+  10.110 ns (1 allocation: 16 bytes)
 </code></pre>
 <h3 id=closure_and_let_blocks ><a href="#closure_and_let_blocks" class=header-anchor >Closure and let blocks</a></h3>
 <p>Part of the problem in the previous section was the appearance of <code>Core.box</code> in type inference. In some cases, we can eliminate such ambiguity via clever use of <code>let...end</code> blocks.</p>
@@ -271,8 +271,8 @@ Body::Int64
 @btime &#36;mul0&#40;2&#41;
 @btime &#36;mul2&#40;2&#41;
 @btime &#36;mul3&#40;2&#41;;</code></pre><pre><code class="plaintext code-output">  0.001 ns (0 allocations: 0 bytes)
-  2.400 ns (0 allocations: 0 bytes)
-  1.599 ns (0 allocations: 0 bytes)
+  2.900 ns (0 allocations: 0 bytes)
+  1.700 ns (0 allocations: 0 bytes)
 </code></pre>
 <p>Note that such care is necessary even if the closure is only used inside the function itself.</p>
 <pre><code class=language-julia >function mulsum0&#40;r0::Int, data&#41;
@@ -303,9 +303,9 @@ data &#61; rand&#40;1000&#41;
 
 @btime mulsum0&#40;&#36;r0, &#36;data&#41;
 @btime abmulsum1&#40;&#36;r0, &#36;data&#41;
-@btime abmulsum2&#40;&#36;r0, &#36;data&#41;;</code></pre><pre><code class="plaintext code-output">  108.395 ns (0 allocations: 0 bytes)
-  109.139 ns (0 allocations: 0 bytes)
-  40.799 μs (3000 allocations: 46.88 KiB)
+@btime abmulsum2&#40;&#36;r0, &#36;data&#41;;</code></pre><pre><code class="plaintext code-output">  172.752 ns (0 allocations: 0 bytes)
+  174.238 ns (0 allocations: 0 bytes)
+  34.400 μs (3000 allocations: 46.88 KiB)
 </code></pre>
 <h3 id=miscallaneous_anonymous_function_appearances ><a href="#miscallaneous_anonymous_function_appearances" class=header-anchor >Miscallaneous anonymous function appearances</a></h3>
 <p>There are other places where anonymous functions are useful. One prominent example is generators.</p>
@@ -333,8 +333,8 @@ mygen1 &#61; mygenmul&#40;-2&#41;
 mygen2 &#61; mygenmul2&#40;-2&#41;
 
 @btime sum&#40;&#36;mygen1&#41;
-@btime sum&#40;&#36;mygen2&#41;;</code></pre><pre><code class="plaintext code-output">  566.115 ns (0 allocations: 0 bytes)
-  2.399 ns (0 allocations: 0 bytes)
+@btime sum&#40;&#36;mygen2&#41;;</code></pre><pre><code class="plaintext code-output">  483.770 ns (0 allocations: 0 bytes)
+  2.400 ns (0 allocations: 0 bytes)
 </code></pre>
 <p>The second function is markedely faster than the first one, precisely because of the issue with captured variables.</p>
 <h2 id=summary_and_performance_tips ><a href="#summary_and_performance_tips" class=header-anchor >Summary and performance tips</a></h2>
