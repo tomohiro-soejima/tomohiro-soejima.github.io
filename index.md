@@ -32,7 +32,7 @@ I am currently working with Prof. Mike Zaletel on tensor network techniques for 
 
 ##  Research
 
-My main area of research is condensed matter physics, and specifically tensor network related numerical methods. I also have a passion on Metal-Organic Frameworks, and have worked on them both experimanntally and theoretically.
+My main area of research is condensed matter physics, and specifically tensor network related numerical methods and twisted bilayer graphene. I also have a passion on Metal-Organic Frameworks, and have worked on them both experimanntally and theoretically.
 
 ## Publications
 
