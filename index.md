@@ -15,9 +15,10 @@ email: tomohiro_soejima (at) berkeley (dot) edu
 
 [GitHub](https://github.com/tomohiro-soejima)
 ### About me
-My name is Tomohiro Soejima, and I am a physics graduate student at University of California, Berkeley.
+My name is Tomohiro Soejima, and I am a postdoctoral scholar at Harvard University.
+Prior to this, I was a physics graduate student at University of California, Berkeley, where I worked with Prof. Mike Zaletel on tensor networks methods and twisted bilayer graphene.
 
-I am currently working with Prof. Mike Zaletel on tensor network techniques for strongly correlated systems. In my spare time, I can be found singing, playing contract bridge, reading about American history, or playing Shogi (将棋).
+In my spare time, I can be found singing, watching soccer, reading about American history, or playing Shogi (将棋).
 
 ~~~
 <div style="clear: both"></div>      
@@ -28,15 +29,15 @@ I am currently working with Prof. Mike Zaletel on tensor network techniques for 
 @def maxtoclevel=2
 \toc <!-- you can use \toc as well -->
 
-
-
 ##  Research
 
-My main area of research is condensed matter physics, and specifically tensor network related numerical methods and twisted bilayer graphene. I also have a passion on Metal-Organic Frameworks, and have worked on them both experimanntally and theoretically.
+My main area of research is condensed matter physics, and specifically tensor network related numerical methods and twisted bilayer graphene.
+I am also interested in understanding entanglement properties of topological ordered states.
+I have also worked on variational quantum algorithms for condensed matter systems as an intern at IBM quantum. 
 
 ## Publications
 
-Full publication list (since graduate school) can be found on [my arXiv author profile](https://arxiv.org/a/soejima_t_1.html). Here is a partial list of publications.
+Full publication list can be found on [my arXiv author profile](https://arxiv.org/a/soejima_t_1.html). Here is a partial list of publications.
 
 @@pubs **Efficient simulation of moiré materials using the density matrix renormalization group**
 
