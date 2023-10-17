@@ -11,7 +11,7 @@
 ~~~
 Tomohiro Soejima (副島　智大)
 
-email: tomohiro_soejima (at) berkeley (dot) edu
+email: tomohiro_soejima (at) g (dot) harvard (dot) edu
 
 [GitHub](https://github.com/tomohiro-soejima)
 ### About me
