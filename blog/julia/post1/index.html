@@ -97,9 +97,9 @@ h(x) = <span class=hljs-number >2</span>x
 data = rand(<span class=hljs-number >1000</span>)
 <span class=hljs-meta >@time</span> mysum(f, data) <span class=hljs-comment ># includes compilation time</span>
 <span class=hljs-meta >@time</span> mysum(f, data) <span class=hljs-comment ># after compilation</span>
-<span class=hljs-meta >@time</span> mysum(h, data) <span class=hljs-comment ># compilation again</span></code></pre><pre><code class="plaintext hljs">  0.005071 seconds (9.88 k allocations: 492.675 KiB)
-  0.000002 seconds
-  0.004528 seconds (5.80 k allocations: 287.255 KiB)
+<span class=hljs-meta >@time</span> mysum(h, data) <span class=hljs-comment ># compilation again</span></code></pre><pre><code class="plaintext hljs">  0.005011 seconds (9.88 k allocations: 492.675 KiB)
+  0.000003 seconds
+  0.004301 seconds (5.80 k allocations: 287.255 KiB)
 </code></pre>
 <h2 id=function-like_objects ><a href="#function-like_objects" class=header-anchor >Function-like objects</a></h2>
 <h3 id=defining_callable_type ><a href="#defining_callable_type" class=header-anchor >Defining callable type</a></h3>
@@ -189,8 +189,8 @@ func = getfunc()
 
 <span class=hljs-keyword >using</span> BenchmarkTools
 <span class=hljs-meta >@btime</span> $c()
-<span class=hljs-meta >@btime</span> $func();</code></pre><pre><code class="plaintext hljs">  1.800 ns (0 allocations: 0 bytes)
-  20.441 ns (1 allocation: 16 bytes)
+<span class=hljs-meta >@btime</span> $func();</code></pre><pre><code class="plaintext hljs">  1.700 ns (0 allocations: 0 bytes)
+  25.276 ns (1 allocation: 16 bytes)
 </code></pre>
 <p>Type annotation somewhat helps, but it is not enough to eliminate the performance gap.</p>
 <pre><code class="julia hljs"><span class=hljs-keyword >function</span> getfunc2()
@@ -204,8 +204,8 @@ func = getfunc()
 func2 = getfunc2()
 
 <span class=hljs-meta >@btime</span> $c()
-<span class=hljs-meta >@btime</span> $func2();</code></pre><pre><code class="plaintext hljs">  1.600 ns (0 allocations: 0 bytes)
-  9.200 ns (1 allocation: 16 bytes)
+<span class=hljs-meta >@btime</span> $func2();</code></pre><pre><code class="plaintext hljs">  1.700 ns (0 allocations: 0 bytes)
+  10.100 ns (1 allocation: 16 bytes)
 </code></pre>
 <h3 id=closure_and_let_blocks ><a href="#closure_and_let_blocks" class=header-anchor >Closure and let blocks</a></h3>
 <p>Part of the problem in the previous section was the appearance of <code>Core.box</code> in type inference. In some cases, we can eliminate such ambiguity via clever use of <code>let...end</code> blocks.</p>
@@ -271,8 +271,8 @@ Body::Int64
 <span class=hljs-meta >@btime</span> $mul0(<span class=hljs-number >2</span>)
 <span class=hljs-meta >@btime</span> $mul2(<span class=hljs-number >2</span>)
 <span class=hljs-meta >@btime</span> $mul3(<span class=hljs-number >2</span>);</code></pre><pre><code class="plaintext hljs">  0.001 ns (0 allocations: 0 bytes)
-  2.800 ns (0 allocations: 0 bytes)
-  1.400 ns (0 allocations: 0 bytes)
+  2.700 ns (0 allocations: 0 bytes)
+  1.700 ns (0 allocations: 0 bytes)
 </code></pre>
 <p>Note that such care is necessary even if the closure is only used inside the function itself.</p>
 <pre><code class="julia hljs"><span class=hljs-keyword >function</span> mulsum0(r0::<span class=hljs-built_in >Int</span>, data)
@@ -303,9 +303,9 @@ data = rand(<span class=hljs-number >1000</span>)
 
 <span class=hljs-meta >@btime</span> mulsum0($r0, $data)
 <span class=hljs-meta >@btime</span> abmulsum1($r0, $data)
-<span class=hljs-meta >@btime</span> abmulsum2($r0, $data);</code></pre><pre><code class="plaintext hljs">  166.268 ns (0 allocations: 0 bytes)
-  168.268 ns (0 allocations: 0 bytes)
-  38.400 μs (3000 allocations: 46.88 KiB)
+<span class=hljs-meta >@btime</span> abmulsum2($r0, $data);</code></pre><pre><code class="plaintext hljs">  62.181 ns (0 allocations: 0 bytes)
+  62.385 ns (0 allocations: 0 bytes)
+  42.401 μs (3000 allocations: 46.88 KiB)
 </code></pre>
 <h3 id=miscallaneous_anonymous_function_appearances ><a href="#miscallaneous_anonymous_function_appearances" class=header-anchor >Miscallaneous anonymous function appearances</a></h3>
 <p>There are other places where anonymous functions are useful. One prominent example is generators.</p>
@@ -333,8 +333,8 @@ mygen1 = mygenmul(-<span class=hljs-number >2</span>)
 mygen2 = mygenmul2(-<span class=hljs-number >2</span>)
 
 <span class=hljs-meta >@btime</span> sum($mygen1)
-<span class=hljs-meta >@btime</span> sum($mygen2);</code></pre><pre><code class="plaintext hljs">  509.332 ns (0 allocations: 0 bytes)
-  2.300 ns (0 allocations: 0 bytes)
+<span class=hljs-meta >@btime</span> sum($mygen2);</code></pre><pre><code class="plaintext hljs">  570.556 ns (0 allocations: 0 bytes)
+  2.700 ns (0 allocations: 0 bytes)
 </code></pre>
 <p>The second function is markedely faster than the first one, precisely because of the issue with captured variables.</p>
 <h2 id=summary_and_performance_tips ><a href="#summary_and_performance_tips" class=header-anchor >Summary and performance tips</a></h2>
