@@ -35,7 +35,7 @@ My main area of research is condensed matter physics, and specifically tensor ne
 I am also interested in understanding entanglement properties of topological ordered states.
 I have also worked on variational quantum algorithms for condensed matter systems as an intern at IBM quantum. 
 
-## Publications
+## Selected publications
 
 Full publication list can be found on [my arXiv author profile](https://arxiv.org/a/soejima_t_1.html). Here is a partial list of publications.
 
