@@ -39,10 +39,23 @@ I have also worked on variational quantum algorithms for condensed matter system
 
 Full publication list can be found on [my arXiv author profile](https://arxiv.org/a/soejima_t_1.html). Here is a partial list of publications.
 
+@@pubs **Quantum textures of the many-body wavefunctions in magic-angle graphene**
+
+Kevin P. Nuckolls, Ryan L. Lee, Myungchul Oh, Dillon Wong, **_Tomohiro Soejima_**, Jung Pyo Hong, Dumitru Călugăru, Jonah Herzog-Arbeitman, B. Andrei Bernevig, Kenji Watanabe, Takashi Taniguchi, Nicolas Regnault, Michael P. Zaletel, Ali Yazdani; _Nature_ @@
+
+@@pubs **Detecting Symmetry Breaking in Magic Angle Graphene Using Scanning Tunneling Microscopy**
+
+Jung Pyo Hong, **_Tomohiro Soejima_**, and Michael P. Zaletel; _Physical Review Letters_ @@
+
+@@pubs **Universal Tripartite Entanglement in One-Dimensional Many-Body Systems**
+
+Yijian Zou, Karthik Siva, **_Tomohiro Soejima_**, Roger S. K. Mong, and Michael P. Zaletel;
+_Physical Review Letters_ @@
 @@pubs **Efficient simulation of moiré materials using the density matrix renormalization group**
 
 **_Tomohiro Soejima_**, Daniel E. Parker, Nick Bultinck, Johannes Hauschild, and Michael P. Zaletel; _Physical Review B_ @@
 @@pubs **Isometric tensor network representation of string-net liquids**
+
 
 **_Tomohiro Soejima_**, Karthik Siva, Nick Bultinck, Shubhayu Chatterjee, Frank Pollmann, and Michael P. Zaletel; _Physical Review B_ @@
 @@pubs **First-Principles Design of a Half-Filled Flat Band of the Kagome Lattice in Two-Dimensional Metal-Organic Frameworks**
