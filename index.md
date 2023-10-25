@@ -64,9 +64,27 @@ Masahiko G. Yamada, **_Tomohiro Soejima_**, Naoto Tsuji, Daisuke Hirai, Mircea D
 
 ## Talks
 
+@@pubs
+**Ground states of twisted bilayer graphene**
+CMT seminar, Stanford University, Nov.2022
+@@
+
+@@pubs
+**Identifying strongly-interacting phases of twisted bilayer graphene with cutting-edge numerics**
+Watanabe group seminar, University of Tokyo, Feb. 2021
+@@
+
+@@pubs
+**Efficient simulation of magic angle twisted bilayer graphene using the density matrix renormalization
+group**
+Correlated Systems with Multicomponent Local Hilbert Spaces (CORRELATED20) -
+KITP, Nov. 2020
+@@
+
 @@pubs **Isometric tensor network representation of string-net liquids.**
 
- Watanabe group, group seminar. University of Tokyo. @@
+ Watanabe group, group seminar. University of Tokyo, July 2019.
+@@
 
 ## Outreach and Service
 
