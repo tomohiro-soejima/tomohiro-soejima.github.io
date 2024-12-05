@@ -76,21 +76,16 @@ s = article_list(authors, titles, arxivs, journalrefs)
 println(s)
 ```
 
-
-
 @@pubs-container
 
 
-@@sidenav
-\toc
-@@
 
 @@pubs-content
 # Publications
 
 Check out [this arXiv author profile](https://arxiv.org/a/soejima_t_1.html) as well as [the Google Scholar profile](https://scholar.google.com/citations?user=jC7UrocAAAAJ&hl=en).
-Many group members publish with other groups too, both at Berkeley and around the world. Check out their individual profile for more info.
 
+\toc
 
 \textoutput{./ex1}
 @@
