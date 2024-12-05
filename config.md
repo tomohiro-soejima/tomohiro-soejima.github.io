@@ -28,13 +28,6 @@ For instance:
 \newcommand{\scal}[1]{\langle #1 \rangle}
 
 
-<!--
-Defining prepath for my website
--->
-
-@def prepath = "zaletelgroupwebsite"
-
-
 \newcommand{\insertprofile}[4]{
 @@row
 @@container
