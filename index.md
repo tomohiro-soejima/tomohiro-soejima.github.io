@@ -39,6 +39,16 @@ I have also worked on variational quantum algorithms for condensed matter system
 
 Full publication list can be found on [my arXiv author profile](https://arxiv.org/a/soejima_t_1.html). Here is a partial list of publications.
 
+@@pubs **Anomalous Hall Crystals in Rhombohedral Multilayer Graphene II: General Mechanism and a Minimal Model**
+
+**_Tomohiro Soejima_**, Junkai Dong, Taige Wang, Tianle Wang, Michael P. Zaletel, Ashvin Vishwanath, Daniel E. Parker; _Physical Review B_
+@@
+
+@@pubs **Anomalous Hall Crystals in Rhombohedral Multilayer Graphene I: Interaction-Driven Chern Bands and Fractional Quantum Hall States at Zero Magnetic Field**
+
+Junkai Dong, Taige Wang, Tianle Wang, **_Tomohiro Soejima_**, Michael P. Zaletel, Ashvin Vishwanath, Daniel E. Parker; _Physical Review Letters_
+@@
+
 @@pubs **Quantum textures of the many-body wavefunctions in magic-angle graphene**
 
 Kevin P. Nuckolls, Ryan L. Lee, Myungchul Oh, Dillon Wong, **_Tomohiro Soejima_**, Jung Pyo Hong, Dumitru Călugăru, Jonah Herzog-Arbeitman, B. Andrei Bernevig, Kenji Watanabe, Takashi Taniguchi, Nicolas Regnault, Michael P. Zaletel, Ali Yazdani; _Nature_ @@
