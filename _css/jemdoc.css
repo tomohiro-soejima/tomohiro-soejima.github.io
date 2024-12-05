@@ -430,3 +430,48 @@ table {
   /*background-color: #ddd;*/
   border-radius: 5px;
 }
+
+
+/* Took it from the Zaletel group website*/
+/* Sidebar CSS adapted from https://www.w3schools.com/howto/howto_css_fixed_sidebar.asp */
+.sidenav {
+  float: left;
+  width: 8%;
+  z-index: 1;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 2%;
+  left: 0px;
+  background: #dcdcdc;/*#eee;*/
+  overflow-x: hidden;
+  padding: 0;
+  border-radius: 5px;
+}
+
+.sidenav a {
+  padding: 4px 0px 4px 0px;
+  text-decoration: none;
+  font-size: 1.6vw;
+  color: #2196F3;
+  display: block;
+  text-align: center;
+}
+
+.sidenav a:hover {
+  color: #064579;
+}
+
+.sidenav ol{
+  list-style-type: none;
+  padding: 0;
+  margin-block-start: 0.1em;
+  margin-block-end: 0.1em;
+}
+
+.sidenav ul li,ol li {
+  margin-bottom: 0em;
+}
+
+.sidenav li ul,li ol {
+  margin-top: 0em
+}
