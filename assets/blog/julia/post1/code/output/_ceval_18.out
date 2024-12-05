@@ -1,3 +1,3 @@
-  201.835 ns (0 allocations: 0 bytes)
-  200.500 ns (0 allocations: 0 bytes)
-  41.400 μs (3000 allocations: 46.88 KiB)
+  75.619 ns (0 allocations: 0 bytes)
+  75.702 ns (0 allocations: 0 bytes)
+  33.542 μs (3000 allocations: 46.88 KiB)
