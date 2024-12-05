@@ -23,6 +23,25 @@
 
 <item>
   <title>
+    <![CDATA[  How to create transverse field Ising model Hamiltonian  ]]>
+  </title>
+  <link> https://tomohiro-soejima.github.io/blog/spin/post1/index.html </link>
+  <guid> https://tomohiro-soejima.github.io/blog/spin/post1/index.html </guid>
+  <description>
+    <![CDATA[  This post explains how to create transverse field Ising model  ]]>
+  </description>  
+    
+  <pubDate>Thu, 05 Dec 2024 00:00:00 +0000</pubDate>  
+  
+  
+  <atom:author>
+    <atom:name>Tomohiro Soejima</atom:name>
+  </atom:author>
+        
+</item>
+
+<item>
+  <title>
     <![CDATA[  Quick guide to Julia  ]]>
   </title>
   <link> https://tomohiro-soejima.github.io/blog/julia/post2/index.html </link>
@@ -80,15 +99,15 @@
 
 <item>
   <title>
-    <![CDATA[  How to create transverse field Ising model Hamiltonian  ]]>
+    <![CDATA[  More goodies  ]]>
   </title>
-  <link> https://tomohiro-soejima.github.io/blog/spin/post1/index.html </link>
-  <guid> https://tomohiro-soejima.github.io/blog/spin/post1/index.html </guid>
+  <link>  </link>
+  <guid>  </guid>
   <description>
-    <![CDATA[  This post explains how to create transverse field Ising model  ]]>
+    <![CDATA[  A short description of the page which would serve as <strong>blurb</strong> in a <code>RSS</code> feed; you can use basic markdown here but the whole description string must be a single line &#40;not a multiline string&#41;. Like this one for instance. Keep in mind that styling is minimal in RSS so for instance don&#39;t expect maths or fancy styling to work; images should be ok though: <img src="https://upload.wikimedia.org/wikipedia/en/b/b0/Rick_and_Morty_characters.jpg" alt="" />  ]]>
   </description>  
     
-  <pubDate>Thu, 05 Dec 2024 00:00:00 +0000</pubDate>  
+  <pubDate>Wed, 01 May 2019 00:00:00 +0000</pubDate>  
   
   
   <atom:author>
@@ -99,15 +118,15 @@
 
 <item>
   <title>
-    <![CDATA[  More goodies  ]]>
+    <![CDATA[  Publications  ]]>
   </title>
-  <link>  </link>
-  <guid>  </guid>
+  <link> https://tomohiro-soejima.github.io/list_of_publications/index.html </link>
+  <guid> https://tomohiro-soejima.github.io/list_of_publications/index.html </guid>
   <description>
-    <![CDATA[  A short description of the page which would serve as <strong>blurb</strong> in a <code>RSS</code> feed; you can use basic markdown here but the whole description string must be a single line &#40;not a multiline string&#41;. Like this one for instance. Keep in mind that styling is minimal in RSS so for instance don&#39;t expect maths or fancy styling to work; images should be ok though: <img src="https://upload.wikimedia.org/wikipedia/en/b/b0/Rick_and_Morty_characters.jpg" alt="" />  ]]>
+    <![CDATA[  Publications  ]]>
   </description>  
     
-  <pubDate>Wed, 01 May 2019 00:00:00 +0000</pubDate>  
+  <pubDate>Fri, 22 Mar 2019 00:00:00 +0000</pubDate>  
   
   
   <atom:author>
