@@ -1,3 +1,3 @@
-  0.003453 seconds (9.88 k allocations: 492.675 KiB)
-  0.000000 seconds
-  0.002869 seconds (5.80 k allocations: 287.255 KiB)
+  0.004090 seconds (9.88 k allocations: 492.675 KiB)
+  0.000001 seconds
+  0.003115 seconds (5.80 k allocations: 287.255 KiB)
