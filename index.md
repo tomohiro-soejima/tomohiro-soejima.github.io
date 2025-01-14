@@ -29,6 +29,14 @@ In my spare time, I can be found singing, watching soccer, reading about America
 @def maxtoclevel=2
 \toc <!-- you can use \toc as well -->
 
+## Brief biography
+
+\bioitem{S.B. in Physics and Chemistry}{Massachusetts Institute of Technology}{2013-2017}
+\bioitem{Research Intern}{Max Planck Institute for Solid state research}{2017-2018}
+\bioitem{Research Intern}{IBM Quantum}{Summer 2022 and Summer 2023}
+\bioitem{Ph.D. in Physics}{UC Berkeley}{2018-2023}
+\bioitem{Moore postdoctoral fellow}{Harvard University}{2023-Present}
+
 ##  Research
 
 My main area of research is condensed matter physics, and specifically tensor network related numerical methods and twisted bilayer graphene.

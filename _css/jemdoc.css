@@ -431,6 +431,19 @@ table {
   border-radius: 5px;
 }
 
+.bioitem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bioyear {
+  text-align: right;
+  margin-left: auto;
+  white-space: nowrap;
+  color: #888;
+  display: inline;
+}
 
 /* Took it from the Zaletel group website*/
 /* Sidebar CSS adapted from https://www.w3schools.com/howto/howto_css_fixed_sidebar.asp */

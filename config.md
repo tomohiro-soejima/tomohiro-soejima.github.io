@@ -74,6 +74,12 @@ arXiv: [#4](https://arxiv.org/abs/!#4), #5
 @@
 }
 
+\newcommand{\bioitem}[3]{
+@@bioitem
+#1; **!#2** ~~~ <span class="bioyear">#3</span> ~~~
+@@
+}
+
 \newcommand{\publist}[1]{
 ```julia:./ex1
 #hideall
