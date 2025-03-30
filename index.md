@@ -7,7 +7,7 @@
 @@row
 @@container
 ~~~
-<img class="right" src="/assets/profile_small_2025.jpg" alt="profile picture"  style="width:320px;height:auto;">
+<img class="right" src="/assets/profile_small_2025.jpeg" alt="profile picture"  style="width:320px;height:auto;">
 ~~~
 Tomohiro Soejima (副島　智大)
 
