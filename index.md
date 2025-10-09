@@ -17,6 +17,8 @@ email: tomohiro_soejima (at) g (dot) harvard (dot) edu
 [GitHub](https://github.com/tomohiro-soejima)
 ### About me
 My name is Tomohiro Soejima, and I am a postdoctoral scholar at Harvard University.
+**Starting in January 2026**, I will be an assitant professor at [New York University](https://as.nyu.edu/departments/physics/research/center-for-quantum-phenomena.html) as well as an associate research scientist at the center for [computational quantum physics (CCQ) in the Flatiron institute](https://www.simonsfoundation.org/flatiron/center-for-computational-quantum-physics/). Interested students and postdocs should contact me at the email address above!
+
 Prior to this, I was a physics graduate student at University of California, Berkeley, where I worked with Prof. Mike Zaletel on tensor networks methods and twisted bilayer graphene.
 
 In my spare time, I can be found singing, watching soccer, reading about American history, or playing Shogi (将棋).
@@ -37,6 +39,8 @@ In my spare time, I can be found singing, watching soccer, reading about America
 \bioitem{Research Intern}{IBM Quantum}{Summer 2022 and Summer 2023}
 \bioitem{Ph.D. in Physics}{UC Berkeley}{2018-2023}
 \bioitem{Moore postdoctoral fellow}{Harvard University}{2023-Present}
+\bioitem{Assistant professor}{New York University}{2026-}
+\bioitem{Associate research scientist}{Center for computational quantum physics, Flatiron institute}{2026-}
 
 ##  Research
 
