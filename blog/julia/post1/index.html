@@ -1,4 +1,4 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/jemdoc.css"> <link rel=apple-touch-icon  sizes=180x180  href="/assets/apple-touch-icon.png"> <link rel=icon  type="image/png" sizes=32x32  href="/assets/favicon-32x32.png"> <link rel=icon  type="image/png" sizes=16x16  href="/assets/favicon-16x16.png"> <link rel=manifest  href="/assets/site.webmanifest"> <title>Function like objects and closures</title> <meta name=google-site-verification  content=kpHYuhI7h81XOVXWEEDn36Yf-_kjnQVC7Acac_desn8  /> <table id=tlayout > <tr valign=top > <td id=layout-menu > <div class="menu-item "><a href="/">home</a></div> <div class="menu-item "><a href="/list_of_publications">Publications</a></div> <div class=menu-category >julia</div> <div class="menu-item "><a href="/blog/julia/post1/">Closure</a></div> <div class="menu-item "><a href="/blog/julia/post2/">QuickJulia</a></div> <div class=menu-category >spin chain</div> <div class="menu-item "><a href="/blog/spin/post1/">sparseTFIM</a></div> <div class=menu-category >GitHub</div> <div class="menu-item "><a href="/blog/GitHub/post1/">Why GitHub?</a></div> <td id=layout-content > <br> <div class="container blog-title"> <h1>Function like objects and closures</h1> <h3> <span style="font-weight: lighter;"> posted: 2020-11-05 | last modified: 2025-10-09 </span> | <span style="font-weight: bold;">Tomohiro Soejima</span> </h3> </div> <br> <div class=franklin-content ><p>Functions are &quot;first-class citizens&quot; in julia. Accordingly, there are a lot of neat tricks you can play with functions such as function closures. On the other hand, there are some pitfalls when using functions that were not obvious to me at first sight. This post is an attempt to document and clarify how functions behave.</p> <div class=franklin-toc ><ol><li><a href="#julia_functions">Julia functions</a><ol><li><a href="#julia_functions_are_first-class_citizens">Julia functions are first-class citizens</a><li><a href="#julia_functions_are_their_own_types">Julia functions are their own types</a></ol><li><a href="#function-like_objects">Function-like objects</a><ol><li><a href="#defining_callable_type">Defining callable type</a><li><a href="#closures">Closures</a><li><a href="#not_all_closures_are_created_equal">Not all closures are created equal</a><li><a href="#closure_and_let_blocks">Closure and let blocks</a><li><a href="#miscallaneous_anonymous_function_appearances">Miscallaneous anonymous function appearances</a></ol><li><a href="#summary_and_performance_tips">Summary and performance tips</a></ol></div> <h2 id=julia_functions ><a href="#julia_functions" class=header-anchor >Julia functions</a></h2> <h3 id=julia_functions_are_first-class_citizens ><a href="#julia_functions_are_first-class_citizens" class=header-anchor >Julia functions are first-class citizens</a></h3> <p>You can define a <strong>named</strong> function and assign that to a variable.</p> <pre><code class="julia hljs">f(x) = <span class=hljs-number >2</span>x
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/libs/highlight/github.min.css"> <link rel=stylesheet  href="/css/franklin.css"> <link rel=stylesheet  href="/css/jemdoc.css"> <link rel=apple-touch-icon  sizes=180x180  href="/assets/apple-touch-icon.png"> <link rel=icon  type="image/png" sizes=32x32  href="/assets/favicon-32x32.png"> <link rel=icon  type="image/png" sizes=16x16  href="/assets/favicon-16x16.png"> <link rel=manifest  href="/assets/site.webmanifest"> <title>Function like objects and closures</title> <meta name=google-site-verification  content=kpHYuhI7h81XOVXWEEDn36Yf-_kjnQVC7Acac_desn8  /> <table id=tlayout > <tr valign=top > <td id=layout-menu > <div class="menu-item "><a href="/">home</a></div> <div class="menu-item "><a href="/list_of_publications">Publications</a></div> <div class=menu-category >julia</div> <div class="menu-item "><a href="/blog/julia/post1/">Closure</a></div> <div class="menu-item "><a href="/blog/julia/post2/">QuickJulia</a></div> <div class=menu-category >spin chain</div> <div class="menu-item "><a href="/blog/spin/post1/">sparseTFIM</a></div> <div class=menu-category >GitHub</div> <div class="menu-item "><a href="/blog/GitHub/post1/">Why GitHub?</a></div> <td id=layout-content > <br> <div class="container blog-title"> <h1>Function like objects and closures</h1> <h3> <span style="font-weight: lighter;"> posted: 2020-11-05 | last modified: 2025-11-06 </span> | <span style="font-weight: bold;">Tomohiro Soejima</span> </h3> </div> <br> <div class=franklin-content ><p>Functions are &quot;first-class citizens&quot; in julia. Accordingly, there are a lot of neat tricks you can play with functions such as function closures. On the other hand, there are some pitfalls when using functions that were not obvious to me at first sight. This post is an attempt to document and clarify how functions behave.</p> <div class=franklin-toc ><ol><li><a href="#julia_functions">Julia functions</a><ol><li><a href="#julia_functions_are_first-class_citizens">Julia functions are first-class citizens</a><li><a href="#julia_functions_are_their_own_types">Julia functions are their own types</a></ol><li><a href="#function-like_objects">Function-like objects</a><ol><li><a href="#defining_callable_type">Defining callable type</a><li><a href="#closures">Closures</a><li><a href="#not_all_closures_are_created_equal">Not all closures are created equal</a><li><a href="#closure_and_let_blocks">Closure and let blocks</a><li><a href="#miscallaneous_anonymous_function_appearances">Miscallaneous anonymous function appearances</a></ol><li><a href="#summary_and_performance_tips">Summary and performance tips</a></ol></div> <h2 id=julia_functions ><a href="#julia_functions" class=header-anchor >Julia functions</a></h2> <h3 id=julia_functions_are_first-class_citizens ><a href="#julia_functions_are_first-class_citizens" class=header-anchor >Julia functions are first-class citizens</a></h3> <p>You can define a <strong>named</strong> function and assign that to a variable.</p> <pre><code class="julia hljs">f(x) = <span class=hljs-number >2</span>x
 g = f
 
 g <span class=hljs-comment ># show this</span></code></pre><pre><code class="plaintext hljs">f (generic function with 1 method)</code></pre>
@@ -97,9 +97,9 @@ h(x) = <span class=hljs-number >2</span>x
 data = rand(<span class=hljs-number >1000</span>)
 <span class=hljs-meta >@time</span> mysum(f, data) <span class=hljs-comment ># includes compilation time</span>
 <span class=hljs-meta >@time</span> mysum(f, data) <span class=hljs-comment ># after compilation</span>
-<span class=hljs-meta >@time</span> mysum(h, data) <span class=hljs-comment ># compilation again</span></code></pre><pre><code class="plaintext hljs">  0.003235 seconds (9.88 k allocations: 492.675 KiB)
-  0.000000 seconds
-  0.002839 seconds (5.80 k allocations: 287.255 KiB)
+<span class=hljs-meta >@time</span> mysum(h, data) <span class=hljs-comment ># compilation again</span></code></pre><pre><code class="plaintext hljs">  0.003316 seconds (9.88 k allocations: 492.675 KiB)
+  0.000001 seconds
+  0.002886 seconds (5.80 k allocations: 287.255 KiB)
 </code></pre>
 <h2 id=function-like_objects ><a href="#function-like_objects" class=header-anchor >Function-like objects</a></h2>
 <h3 id=defining_callable_type ><a href="#defining_callable_type" class=header-anchor >Defining callable type</a></h3>
@@ -190,7 +190,7 @@ func = getfunc()
 <span class=hljs-keyword >using</span> BenchmarkTools
 <span class=hljs-meta >@btime</span> $c()
 <span class=hljs-meta >@btime</span> $func();</code></pre><pre><code class="plaintext hljs">  1.552 ns (0 allocations: 0 bytes)
-  21.655 ns (1 allocation: 16 bytes)
+  20.981 ns (1 allocation: 16 bytes)
 </code></pre>
 <p>Type annotation somewhat helps, but it is not enough to eliminate the performance gap.</p>
 <pre><code class="julia hljs"><span class=hljs-keyword >function</span> getfunc2()
@@ -205,7 +205,7 @@ func2 = getfunc2()
 
 <span class=hljs-meta >@btime</span> $c()
 <span class=hljs-meta >@btime</span> $func2();</code></pre><pre><code class="plaintext hljs">  1.552 ns (0 allocations: 0 bytes)
-  9.286 ns (1 allocation: 16 bytes)
+  9.267 ns (1 allocation: 16 bytes)
 </code></pre>
 <h3 id=closure_and_let_blocks ><a href="#closure_and_let_blocks" class=header-anchor >Closure and let blocks</a></h3>
 <p>Part of the problem in the previous section was the appearance of <code>Core.box</code> in type inference. In some cases, we can eliminate such ambiguity via clever use of <code>let...end</code> blocks.</p>
@@ -303,9 +303,9 @@ data = rand(<span class=hljs-number >1000</span>)
 
 <span class=hljs-meta >@btime</span> mulsum0($r0, $data)
 <span class=hljs-meta >@btime</span> abmulsum1($r0, $data)
-<span class=hljs-meta >@btime</span> abmulsum2($r0, $data);</code></pre><pre><code class="plaintext hljs">  75.599 ns (0 allocations: 0 bytes)
-  75.733 ns (0 allocations: 0 bytes)
-  33.111 μs (3000 allocations: 46.88 KiB)
+<span class=hljs-meta >@btime</span> abmulsum2($r0, $data);</code></pre><pre><code class="plaintext hljs">  75.598 ns (0 allocations: 0 bytes)
+  75.670 ns (0 allocations: 0 bytes)
+  33.131 μs (3000 allocations: 46.88 KiB)
 </code></pre>
 <h3 id=miscallaneous_anonymous_function_appearances ><a href="#miscallaneous_anonymous_function_appearances" class=header-anchor >Miscallaneous anonymous function appearances</a></h3>
 <p>There are other places where anonymous functions are useful. One prominent example is generators.</p>
@@ -333,8 +333,8 @@ mygen1 = mygenmul(-<span class=hljs-number >2</span>)
 mygen2 = mygenmul2(-<span class=hljs-number >2</span>)
 
 <span class=hljs-meta >@btime</span> sum($mygen1)
-<span class=hljs-meta >@btime</span> sum($mygen2);</code></pre><pre><code class="plaintext hljs">  552.048 ns (0 allocations: 0 bytes)
-  2.484 ns (0 allocations: 0 bytes)
+<span class=hljs-meta >@btime</span> sum($mygen2);</code></pre><pre><code class="plaintext hljs">  536.739 ns (0 allocations: 0 bytes)
+  2.174 ns (0 allocations: 0 bytes)
 </code></pre>
 <p>The second function is markedely faster than the first one, precisely because of the issue with captured variables.</p>
 <h2 id=summary_and_performance_tips ><a href="#summary_and_performance_tips" class=header-anchor >Summary and performance tips</a></h2>
@@ -350,7 +350,7 @@ mygen2 = mygenmul2(-<span class=hljs-number >2</span>)
 <p>I hope that was useful, and please feel free to send me some comments&#33;</p>
 <div class=page-foot >
   <div class=copyright >
-    &copy; Tomohiro Soejima. Last modified: October 09, 2025. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> 
+    &copy; Tomohiro Soejima. Last modified: November 06, 2025. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> 
   </div>
 </div>
 </div>
