@@ -11,7 +11,7 @@
 ~~~
 Tomohiro Soejima (副島　智大)
 
-email: tsoejima (at) flatironinstitute (dot) org
+email: tomohiro (dot) soejima (at) nyu (dot) edu
 
 [Google Scholar](https://scholar.google.com/citations?user=jC7UrocAAAAJ&hl=en)
 [GitHub](https://github.com/tomohiro-soejima)
