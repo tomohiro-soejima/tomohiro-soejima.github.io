@@ -31,7 +31,7 @@
     <![CDATA[  This post explains how to create transverse field Ising model  ]]>
   </description>  
     
-  <pubDate>Fri, 12 Jun 2026 00:00:00 +0000</pubDate>  
+  <pubDate>Thu, 18 Jun 2026 00:00:00 +0000</pubDate>  
   
   
   <atom:author>
@@ -50,7 +50,7 @@
     <![CDATA[  Quick guide to julia  ]]>
   </description>  
     
-  <pubDate>Fri, 12 Jun 2026 00:00:00 +0000</pubDate>  
+  <pubDate>Thu, 18 Jun 2026 00:00:00 +0000</pubDate>  
   
   
   <atom:author>
@@ -69,7 +69,7 @@
     <![CDATA[  Function-like objects in Julia  ]]>
   </description>  
     
-  <pubDate>Fri, 12 Jun 2026 00:00:00 +0000</pubDate>  
+  <pubDate>Thu, 18 Jun 2026 00:00:00 +0000</pubDate>  
   
   
   <atom:author>
@@ -88,7 +88,26 @@
     <![CDATA[  This post explains how to create transverse field Ising model  ]]>
   </description>  
     
-  <pubDate>Fri, 12 Jun 2026 00:00:00 +0000</pubDate>  
+  <pubDate>Thu, 18 Jun 2026 00:00:00 +0000</pubDate>  
+  
+  
+  <atom:author>
+    <atom:name>Tomohiro Soejima</atom:name>
+  </atom:author>
+        
+</item>
+
+<item>
+  <title>
+    <![CDATA[  Academic Writing as if Readers Matter  ]]>
+  </title>
+  <link> https://tomohiro-soejima.github.io/blog/BookReview/post1/index.html </link>
+  <guid> https://tomohiro-soejima.github.io/blog/BookReview/post1/index.html </guid>
+  <description>
+    <![CDATA[  Academic Writing as if Readers Matter  ]]>
+  </description>  
+    
+  <pubDate>Thu, 18 Jun 2026 00:00:00 +0000</pubDate>  
   
   
   <atom:author>
